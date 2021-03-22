@@ -1,0 +1,76 @@
+﻿<script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+@model TownerTown.Entities.User
+@{
+    ViewData["Title"] = "LogIn";
+}
+
+
+<div class="container-fluid" id="authentication-wrapper" style="width: 300px; text-align: center; background: #c6cac6;margin-top: 150px;">
+
+    <div id="welcome-message" style="margin: 20px; padding: 20px;">
+        <h4>Log In </h4>
+    </div>
+    <div id="wrap" style="        margin-bottom: 20px;
+">
+        <img src="https://bit.ly/2udBml1" alt="profile picture" style="  width: 82px; bottom: 65px;">
+    </div>
+    <form  asp-action="Authenticate" asp-controller="Authorization">
+        <div class="row">
+
+            <div style="margin:10px" class="col-xs-12 col-sm-12 col-md-12">
+
+                <kendo-textbox-container floatingLabel="Username">
+                    <input required asp-for="UserName" class="form-control" style="width:90%" placeholder="UserName" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </kendo-textbox-container>
+            </div>
+            <div style="margin:10px" class="col-xs-12 col-sm-12 col-md-12">
+                <kendo-textbox-container floatingLabel="Password">
+                    <input required asp-for="Password" class="form-control" style="width:90%" type="password" placeholder="Password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </kendo-textbox-container>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <button class="submit-btn btn btn-success" style="width: 74%; margin: 20px 0;">
+                    Login
+                </button>
+            </div>
+
+        </div>
+    </form>
+    <a asp-area="" asp-controller="ManageBusiness" asp-action="Register"  style="background-color:white">Register New User</a>
+    <a asp-action="Index" style="background-color:white">Back to List</a>
+</div>
+
+<style>
+     body{
+        background-color:white;
+    }
+   body .MainLayout .MainLayout2{
+       background-color:white;
+   }
+    #authentication-wrapper {
+        width: 300px;
+        text-align: center;
+        background: #c6cac6;
+    }
+
+    #wrap {
+        margin-bottom: 20px;
+    }
+
+        #wrap img {
+            width: 82px;
+            bottom: 65px;
+        }
+
+    #welcome-message {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    .submit-btn {
+        width: 74%;
+        margin: 20px 0;
+    }
+</style>

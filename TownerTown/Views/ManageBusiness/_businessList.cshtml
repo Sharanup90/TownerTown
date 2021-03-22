@@ -1,0 +1,211 @@
+﻿@model IEnumerable<TownerTown.Entities.Business>
+<table class="table table-striped">
+    <thead style="background-color: beige;">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">BusinessName</th>
+            <th scope="col">Category</th>
+            <th scope="col">Location</th>
+            <th scope="col">Owner Name</th>
+            <th scope="col">Mobile Number</th>
+            <th scope="col" style="text-align: center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int count = 0;
+            @foreach (var business in Model)
+            {
+                <tr>
+                    <th scope="row">count</th>
+                    <td scope="col" style="width:200px">@business.BusinessName</td>
+                    <td scope="col" style="width:100px">medica@*@business.Category.CategoryName*@</td>
+                    <td scope="col" style="width:250px">@business.Address.Area @business.Address.City @business.Address.State</td>
+                    <td scope="col" style="width:200px">@business.BusinessOwner.FirstName @business.BusinessOwner.LastName</td>
+                    <td scope="col" style="width:160px">@business.BusinessOwner.MobileNumber </td>
+                    @if (business.IsBlocked == false)
+                    {
+                        <td scope="col"><button class="btn btn-link" onclick="(@("openForm('"+business.BusinessOwner.ID+"')"))">Block</button> | @Html.ActionLink("View", "ViewBusiness", new { id = business.BusinessOwner.ID }) </td>
+                    }
+                    else
+                    {
+                        <td scope="col"><button class="btn btn-link" onclick="(@("UnBlockUser('"+business.BusinessOwner.ID+"')"))">UnBlock</button> |  @Html.ActionLink("View", "ViewBusiness", new { id = business.BusinessOwner.ID }) </td>
+                    }
+                </tr>
+                count++;
+            }
+        }
+
+    </tbody>
+</table>
+<div class="form-popup" id="myForm" style="display:none;/* text-align: center; */position: absolute;top: 150px;right: 150px;bottom: 0;left: 300px;width: 600px;height: 209px; background-color:cornflowerblue;">
+    <form name="blockForm" class="form-container" style=" width: 100%; height: 100%;" onsubmit="BlockUser()">
+        <label>Reason</label>
+        <div style="position:absolute; top:0; right:0;"><button class="btn-link">close</button></div>
+        <textarea placeholder="Enter Reason for blocking.." id="blockReason" rows="3" class="form-control" spellcheck="false" style=" margin-bottom: 20px;"></textarea>
+        <button type="submit" class="btn  btn-sm" style=" text-align: center; width: auto;height: 50px;">
+            Block
+        </button>
+    </form>
+</div>
+
+
+<style>
+
+    /* Button used to open the contact form - fixed at the bottom of the page */
+    .open-button {
+        background-color: #555;
+        color: white;
+        padding: 16px 20px;
+        border: none;
+        cursor: pointer;
+        opacity: 0.8;
+        position: fixed;
+        bottom: 23px;
+        right: 28px;
+        width: 280px;
+    }
+
+    /* The popup form - hidden by default */
+    .form-popup {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        right: 15px;
+        border: 3px solid #f1f1f1;
+        z-index: 9;
+    }
+
+    /* Add styles to the form container */
+    .form-container {
+        padding: 10px;
+        background-color: white;
+    }
+
+        /* Full-width input fields */
+        .form-container input[type=text], .form-container input[type=password] {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            border: none;
+            background: #f1f1f1;
+        }
+
+            /* When the inputs get focus, do something */
+            .form-container input[type=text]:focus, .form-container input[type=password]:focus {
+                background-color: #ddd;
+                outline: none;
+            }
+
+        /* Set a style for the submit/login button */
+        .form-container .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        /* Add a red background color to the cancel button */
+        .form-container .cancel {
+            background-color: red;
+        }
+
+        /* Add some hover effects to buttons */
+        .form-container .btn:hover, .open-button:hover {
+            opacity: 1;
+        }
+</style>
+<script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
+@*<p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BusinessID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BusinessName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TagLine)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RegistrationNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RegisteredOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TelephoneNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.About)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Products)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WebsiteLink)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Membership)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TagLine)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegistrationNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisteredOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TelephoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.About)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Products)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WebsiteLink)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Membership)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>*@

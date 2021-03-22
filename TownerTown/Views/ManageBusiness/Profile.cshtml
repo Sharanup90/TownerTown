@@ -1,0 +1,1459 @@
+﻿@model TownerTown.Web.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "ViewModel";
+}
+<div style="background-color:white">
+
+    <div style="background-color:white">
+        <div>
+            @if (Model.Business.Images.Count != 0)
+            {
+                <img src="@Url.Content(Model.Business.Images[0].Path)" style="width:100%; height:250px" />
+            }
+            else
+            {
+                <img src="~/lib/images/ShopImages/mainImg.jpg" style="width:100%; height:250px" />
+            }
+        </div>
+        <div class="fixed navbar navbar">
+            <a class="active" href="#">Overview</a>
+            <a href="#About">About</a>
+            <a href="#Products">Products</a>
+            <a href="#Reviews">Reviews</a>
+            <a href="#Photos">Photos</a>
+        </div>
+
+        <div class="col-sm-12">
+
+            <div style="padding-right:0px">
+                <div class="container-fluid">
+                    <form name="updateModelform">
+                        <div class="row">
+
+                            <div class="col-sm-12" style="margin:0px;padding:0px">
+                                <h3 style="color:blue; font-size:24px">Overview</h3>
+                            </div>
+                            <div class="col-sm-10" style="margin:0px;padding:0px">
+                                <h4 id="ModelName1" style="color:brown">@Model.Business.BusinessName </h4>
+                                <input type="text" id="ModelName2" class="form-control" value="@Model.Business.BusinessName" style="width:700px; display:none" />
+                            </div>
+
+                            <div class="col-sm-2" style="margin:0px;padding:0px">
+                                <input id="editModelButton" type="button" onclick="EditBussinessName()" class="btn btn-light" value="Edit" style="" />
+                                <input id="updateModelButton" type="button" onclick="UpdateBussinessName()" class="btn btn-primary" value="Update" style="display:none" />
+                            </div>
+
+                            <div class="col-sm-12" style="margin:0px;padding:0px">
+                                <hr />
+                            </div>
+                            <div class="col-sm-10" style="margin:0px;padding:0px">
+                                <h5 id="TagLine1">@Model.Business.TagLine </h5>
+                                <input type="text" id="TagLine2" class="form-control" value="@Model.Business.TagLine" style="width:700px; display:none" />
+                            </div>
+                            <div class="col-sm-2" style="margin:0px;padding:0px">
+                                <input id="editTagLineButton" type="button" onclick="EditTagLine()" class="btn btn-light" value="Edit" style="" />
+                                <input id="updateTagLineButton" type="button" onclick="UpdateTagLine()" class="btn btn-primary" value="Update" style="display:none" />
+                            </div>
+                            <div class="col-sm-12" style="margin:0px;padding:0px">
+                                <hr />
+                            </div>
+                            <div class="col-sm-2" style="margin:0px;padding:0px">
+                                Category:
+                            </div>
+                            <div class="col-sm-8" id="Category1" style="margin:0px;padding:0px">
+                                <h6>@Model.Business.Category.CategoryName </h6>
+                            </div>
+                            <div class="col-sm-8" id="Category2" style="margin:0px;padding:0px; display:none">
+                                @Html.ListBoxFor(Model => Model.SearchViewModel.selectedCategories, new SelectList(Model.SearchViewModel.Categories, "CategoryName", "CategoryName"), new { Id = "Categories", multiple = "multiple" })
+                            </div>
+                            <div class="col-sm-2" style="margin:0px;padding:0px">
+                                <input id="editCategoryButton" type="button" onclick="EditCategory()" class="btn btn-light" value="Edit" style="" />
+                                <input id="updateCategoryButton" type="button" onclick="UpdateCategory()" class="btn btn-primary" value="Update" style="display:none" />
+                            </div>
+                            <div class="col-sm-12" style="margin:0px;padding:0px">
+                                <hr />
+                            </div>
+                            <div class="col-sm-2" style="margin:0px;padding:0px">
+                                WebSite Link:
+                            </div>
+                            <div class="col-sm-8" style="margin:0px;padding:0px">
+                                @if (Model.Business.WebsiteLink == null || Model.Business.WebsiteLink == "")
+                                {
+                                    <input type="text" id="AddWebsite" class="form-control" style="width:700px;" />
+                                }
+                                else
+                                {
+                                    <h6 id="WebsiteLink1">@Model.Business.WebsiteLink </h6>
+                                }
+
+                                <input type="text" id="WebsiteLink2" class="form-control" value="@Model.Business.WebsiteLink" style="width:700px; display:none" />
+
+                            </div>
+                            <div class="col-sm-2" style="margin:0px;padding:0px">
+                                @if (Model.Business.WebsiteLink == null || Model.Business.WebsiteLink == "")
+                                {
+                                    <input id="AddWebsiteLinkButton" type="button" onclick="AddWebsiteLink()" class="btn btn-light" value="Edit" style="" />
+                                }
+                                else
+                                {
+                                    <input id="editWebsiteLinkButton" type="button" onclick="EditWebsiteLink()" class="btn btn-light" value="Edit" style="" />
+                                    <input id="updateWebsiteLinkButton" type="button" onclick="UpdateWebsiteLink()" class="btn btn-primary" value="Update" style="display:none" />
+                                }
+                            </div>
+                            <hr />
+
+                            <div class="col-sm-12" style="margin:0px;padding:0px">
+                                <hr />
+                            </div>
+                            <div class="col-sm-2" style="padding: 0px;">
+                                Address:
+                            </div>
+                            <div id="Address1" class="col-sm-8" style="margin:0px;padding:0px">
+                                <h6>@Model.Business.Address.AddressLine1</h6>
+                                <h6>@Model.Business.Address.AddressLine2</h6>
+                                <h6> @Model.Business.Address.Area, @Model.Business.Address.City, @Model.Business.Address.Country, @Model.Business.Address.PinCode</h6>
+                                <div style="/* width:40px; */height:40px;">View On Map<img style="width:40px;height: 35px;margin-top: -7px;" src="/lib/images/Logos/location.jpg"></div>
+                            </div>
+                            <div id="Address2" class="col-sm-8" style="display: none">
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    <textarea required placeholder="Enter Address Here.." asp-for="@Model.Business.Address.AddressLine1" rows="3" class="form-control"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3 form-group">
+                                        <label>Area</label>
+                                        <input required type="text" asp-for="@Model.Business.Address.Area" placeholder="Enter Area Name Here.." class="form-control">
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label>City</label>
+                                        <input required type="text" asp-for="@Model.Business.Address.City" placeholder="Enter City Name Here.." class="form-control">
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label>State</label>
+                                        <input required asp-for="@Model.Business.Address.State" placeholder="Choose State" list="states" name="state" id="state" class="form-control">
+                                        <datalist id="states">
+                                            <option value="">------------Select State------------</option>
+                                            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                            <option value="Assam">Assam</option>
+                                            <option value="Bihar">Bihar</option>
+                                            <option value="Chandigarh">Chandigarh</option>
+                                            <option value="Chhattisgarh">Chhattisgarh</option>
+                                            <option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</option>
+                                            <option value="Daman and Diu">Daman and Diu</option>
+                                            <option value="Delhi">Delhi</option>
+                                            <option value="Goa">Goa</option>
+                                            <option value="Gujarat">Gujarat</option>
+                                            <option value="Haryana">Haryana</option>
+                                            <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                            <option value="Jharkhand">Jharkhand</option>
+                                            <option value="Karnataka">Karnataka</option>
+                                            <option value="Kerala">Kerala</option>
+                                            <option value="Lakshadweep">Lakshadweep</option>
+                                            <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                            <option value="Maharashtra">Maharashtra</option>
+                                            <option value="Manipur">Manipur</option>
+                                            <option value="Meghalaya">Meghalaya</option>
+                                            <option value="Mizoram">Mizoram</option>
+                                            <option value="Nagaland">Nagaland</option>
+                                            <option value="Orissa">Orissa</option>
+                                            <option value="Pondicherry">Pondicherry</option>
+                                            <option value="Punjab">Punjab</option>
+                                            <option value="Rajasthan">Rajasthan</option>
+                                            <option value="Sikkim">Sikkim</option>
+                                            <option value="Tamil Nadu">Tamil Nadu</option>
+                                            <option value="Tripura">Tripura</option>
+                                            <option value="Uttaranchal">Uttaranchal</option>
+                                            <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                            <option value="West Bengal">West Bengal</option>
+                                            <option value="Ladakh">Ladakh</option>
+                                            <option value="Kashmir">Kashmir</option>
+                                        </datalist>
+                                        <input type="text" asp-for="@Model.Business.Address.State" hidden />
+                                        <span asp-validation-for="@Model.Business.Address.State" class="text-danger"></span>
+                                    </div>
+                                    <input type="text" asp-for="@Model.Business.Address.Country" hidden />
+                                    <div class="col-sm-3 form-group">
+                                        <label>PinCode</label>
+                                        <input required pattern="[0-9]{4}" maxlength="6" type="number" asp-for="@Model.Business.Address.PinCode" placeholder="Enter PinCode Here.." class="form-control">
+                                        <span asp-validation-for="@Model.Business.Address.PinCode" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2" style="margin:0px;padding:0px">
+                                <input id="editAddressButton" type="button" onclick="EditAddress()" class="btn btn-light" value="Edit" style="" />
+                                <input id="updateAddressButton" type="button" onclick="UpdateAddress()" class="btn btn-primary" value="Update" style="display:none" />
+                            </div>
+                            <div class="col-sm-12" style="margin:0px;padding:0px">
+                                <hr />
+                            </div>
+
+                            <div class="col-sm-2" style="margin-top: 10px;padding: 0px;">
+                                Mobile Number:
+                            </div>
+                            <div class="col-sm-2" style="margin-top: 10px;">
+                                <h6 id="MobileNumber1">@Model.Business.BusinessOwner.MobileNumber </h6>
+                                <input type="text" id="MobileNumber2" class="form-control" value=">@Model.Business.BusinessOwner.MobileNumber" style="display:none" />
+                            </div>
+                            <div class="col-sm-2" style="margin:0px;padding:0px">
+                                <input id="editMobileNumberButton" type="button" onclick="EditMobileNumber()" class="btn btn-light" value="Edit" style="" />
+                                <input id="updateMobileNumberButton" type="button" onclick="UpdateMobileNumber()" class="btn btn-primary" value="Update" style="display:none" />
+                            </div>
+                            <div class="col-sm-2" style="margin-top: 10px;padding: 0px;">
+                                WhatsApp Number:
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6 id="WhatsAppNumber1">@Model.Business.BusinessOwner.WhatsAppNumber </h6>
+                                <input type="text" id="WhatsAppNumber2" class="form-control" value=">@Model.Business.BusinessOwner.WhatsAppNumber" style="display:none" />
+                            </div>
+
+                            <div class="col-sm-2" style="margin:0px;padding:0px">
+                                <input id="editWhatsAppNumberButton" type="button" onclick="EditWhatsAppNumber()" class="btn btn-light" value="Edit" style="" />
+                                <input id="updateWhatsAppNumberButton" type="button" onclick="UpdateWhatsAppNumber()" class="btn btn-primary" value="Update" style="display:none" />
+                            </div>
+                            <div class="col-sm-12" style="margin:0px;padding:0px">
+                                <hr />
+                            </div>
+                            <div>
+
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                                <h6>Timings:</h6>
+                            </div>
+                            <div id="Timings1" class="row">
+                                <div class="col-sm-2" style=" margin-top: 10px;">
+
+                                </div>
+                                <div class="col-sm-2" style=" margin-top: 10px;">
+                                    <h6>Monday</h6>
+                                </div>
+                                @if (Model.Business.Timings.Monday.Closed != true)
+                                {
+                                    <div class="col-sm-8" style=" margin-top: 10px;">
+                                        @Model.Business.Timings.Monday.StartTime To  @Model.Business.Timings.Monday.EndTime
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-8">
+                                        Closed
+                                    </div>
+                                }
+
+                                <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+
+                                </div>
+                                <div class="col-sm-2" style=" margin-top: 10px;">
+                                    <h6>Tuesday</h6>
+                                </div>
+                                @if (Model.Business.Timings.Tuesday.Closed != true)
+                                {
+                                    <div class="col-sm-8" style=" margin-top: 10px;">
+                                        @Model.Business.Timings.Tuesday.StartTime To  @Model.Business.Timings.Tuesday.EndTime
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-8">
+                                        Closed
+                                    </div>
+                                }
+                                <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                                </div>
+                                <div class="col-sm-2" style=" margin-top: 10px;">
+                                    <h6>Wednesday</h6>
+                                </div>
+                                @if (Model.Business.Timings.Wednesday.Closed != true)
+                                {
+                                    <div class="col-sm-8" style=" margin-top: 10px;">
+                                        @Model.Business.Timings.Wednesday.StartTime To  @Model.Business.Timings.Wednesday.EndTime
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-8">
+                                        Closed
+                                    </div>
+                                }
+                                <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                                </div>
+                                <div class="col-sm-2" style=" margin-top: 10px;">
+                                    <h6>Thursday</h6>
+                                </div>
+                                @if (Model.Business.Timings.Thursday.Closed != true)
+                                {
+                                    <div class="col-sm-8" style=" margin-top: 10px;">
+                                        @Model.Business.Timings.Thursday.StartTime To  @Model.Business.Timings.Thursday.EndTime
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-8">
+                                        Closed
+                                    </div>
+                                }
+                                <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                                </div>
+                                <div class="col-sm-2" style=" margin-top: 10px;">
+                                    <h6>Friday</h6>
+                                </div>
+                                @if (Model.Business.Timings.Friday.Closed != true)
+                                {
+                                    <div class="col-sm-8" style=" margin-top: 10px;">
+                                        @Model.Business.Timings.Friday.StartTime To  @Model.Business.Timings.Friday.EndTime
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-8">
+                                        Closed
+                                    </div>
+                                }
+                                <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                                </div>
+                                <div class="col-sm-2" style=" margin-top: 10px;">
+                                    <h6>Saturday</h6>
+                                </div>
+                                @if (Model.Business.Timings.Saturday.Closed != true)
+                                {
+                                    <div class="col-sm-8" style=" margin-top: 10px;">
+                                        @Model.Business.Timings.Saturday.StartTime To  @Model.Business.Timings.Saturday.EndTime
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-8">
+                                        Closed
+                                    </div>
+                                }
+                                <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+
+                                </div>
+                                <div class="col-sm-2" style=" margin-top: 10px;">
+                                    <h6>Sunday</h6>
+                                </div>
+                                @if (Model.Business.Timings.Sunday.Closed != true)
+                                {
+                                    <div class="col-sm-8" style=" margin-top: 10px;">
+                                        @Model.Business.Timings.Sunday.StartTime To  @Model.Business.Timings.Sunday.EndTime
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-8">
+                                        Closed
+                                    </div>
+                                }
+                            </div>
+                            <div class="form-group row" id="Timings2" style="display:none">
+                                <div class="col-sm-2">
+                                </div>
+                                <div class="col-sm-10" style=" margin-top: 10px;padding:0px">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Start Time</th>
+                                                <th>End Time</th>
+                                                <th>Closed</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Monday</td>
+                                                <td><input type="time" asp-for="@Model.Business.Timings.Monday.StartTime" onchange="monStart()" id="mondayStartTime" class="input-xlarge"></td>
+                                                <td><input type="time" asp-for="@Model.Business.Timings.Monday.EndTime" onchange="monEnd()" id="mondayEndTime" class="input-xlarge"></td>
+                                                <td><input asp-for="@Model.Business.Timings.Monday.Closed" type="checkbox" onchange="monClosed()" id="mondayClose" class="input-xlarge"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tuesday</td>
+                                                <td><input type="time" asp-for="@Model.Business.Timings.Tuesday.StartTime" onchange="tueStart()" id="tuesdayStartTime" class="input-xlarge"></td>
+                                                <td><input type="time" asp-for="@Model.Business.Timings.Tuesday.EndTime" onchange="tueEnd()" id="tuesdayEndTime" class="input-xlarge"></td>
+                                                <td><input asp-for="@Model.Business.Timings.Tuesday.Closed" type="checkbox" onchange="tueClosed()" id="tuesdayClose" class="input-xlarge"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Wednesday</td>
+                                                <td><input type="time" asp-for="@Model.Business.Timings.Wednesday.StartTime" onchange="wedStart()" id="wednesdayStartTime" class="input-xlarge"></td>
+                                                <td><input type="time" asp-for="@Model.Business.Timings.Wednesday.EndTime" onchange="wedEnd()" id="wednesdayEndTime" class="input-xlarge"></td>
+                                                <td><input asp-for="@Model.Business.Timings.Wednesday.Closed" type="checkbox" onchange="wedClosed()" id="wednesdayClose" class="input-xlarge"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Thursday</td>
+                                                <td><input type="time" asp-for="@Model.Business.Timings.Thursday.StartTime" onchange="thuStart()" id="thursdayStartTime" class="input-xlarge"></td>
+                                                <td><input type="time" asp-for="@Model.Business.Timings.Thursday.EndTime" onchange="thuEnd()" id="thursdayEndTime" class="input-xlarge"></td>
+                                                <td><input asp-for="@Model.Business.Timings.Thursday.Closed" type="checkbox" onchange="thuClosed()" id="thursdayClose" class="input-xlarge"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Friday</td>
+                                                <td><input type="time" asp-for="@Model.Business.Timings.Friday.StartTime" onchange="friStart()" id="fridayStartTime" class="input-xlarge"></td>
+                                                <td><input type="time" asp-for="@Model.Business.Timings.Friday.EndTime" onchange="friEnd()" id="fridayEndTime" class="input-xlarge"></td>
+                                                <td><input asp-for="@Model.Business.Timings.Friday.Closed" type="checkbox" onchange="friClosed()" id="fridayClose" class="input-xlarge"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Saturday</td>
+                                                <td><input type="time" asp-for="@Model.Business.Timings.Saturday.StartTime" onchange="satStart()" id="saturdayStartTime" class="input-xlarge"></td>
+                                                <td><input type="time" asp-for="@Model.Business.Timings.Saturday.EndTime" onchange="satEnd()" id="saturdayEndTime" class="input-xlarge"></td>
+                                                <td><input asp-for="@Model.Business.Timings.Saturday.Closed" type="checkbox" onchange="satClosed()" id="saturdayClose" class="input-xlarge"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Sunday</td>
+                                                <td><input type="time" asp-for="@Model.Business.Timings.Sunday.StartTime" onchange="sunStart()" id="sundayStartTime" class="input-xlarge"></td>
+                                                <td><input type="time" asp-for="@Model.Business.Timings.Sunday.EndTime" onchange="sunEnd()" id="sundayEndTime" class="input-xlarge"></td>
+                                                <td><input asp-for="@Model.Business.Timings.Sunday.Closed" type="checkbox" onchange="sunClosed()" id="sundayClose" class="input-xlarge"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                            </div>
+                            <div class="col-sm-2" style="margin:0px;padding:0px">
+                                <input id="editTimingsButton" type="button" onclick="EditTimings()" class="btn btn-light" value="Edit" style="" />
+                                <input id="updateTimingsButton" type="button" onclick="UpdateTimings()" class="btn btn-primary" value="Update" style="display:none" />
+                            </div>
+
+                            <div class="col-sm-12">
+                                <hr style="border-top: 1px solid #000;">
+                            </div>
+                            <div id="About" class="col-sm-10" style="background-color:white">
+                                <h3 style="color:blue; font-size:24px">About</h3>
+                            </div>
+                            <div class="col-sm-2" style="margin:0px;padding:0px">
+                                <input id="editAboutButton" type="button" onclick="EditAbout()" class="btn btn-light" value="Edit" style="" />
+                                <input id="updateAboutButton" type="button" onclick="UpdateAbout()" class="btn btn-primary" value="Update" style="display:none" />
+                            </div>
+                            <div id="About" class="col-sm-12" style="background-color:white">
+                                <h6 id="About1">@Model.Business.About </h6>
+                                <textarea id="About2" placeholder="About the shop.." style="display:none" value="@Model.Business.About" rows="3" class="form-control"></textarea>
+                            </div>
+                            <div class="col-sm-12">
+                                <hr style="border-top: 1px solid #000;">
+                            </div>
+                            <div id="Products" class="col-sm-10">
+                                <h3 style="color:blue; font-size:24px; background-color:white">Products</h3>
+                            </div>
+                            <div class="col-sm-2" style="margin:0px;padding:0px">
+                                <input id="editProductsButton" type="button" onclick="EditProducts()" class="btn btn-light" value="Edit" style="" />
+                                <input id="updateProductsButton" type="button" onclick="UpdateProducts()" class="btn btn-primary" value="Update" style="display:none" />
+                            </div>
+                            <div id="Products" class="col-sm-12">
+                                <h6 id="Products1">@Model.Business.Products </h6>
+                                <textarea id="Products2" placeholder="About the shop.." style="display:none" value="@Model.Business.About" rows="3" class="form-control"></textarea>
+                            </div>
+                            <div class="col-sm-12">
+                                <hr style="border-top: 1px solid #000;">
+                            </div>
+                            <div id="Reviews" class="col-sm-12">
+                                <h3 style="color:blue; font-size:24px; background-color:white">Reviews</h3>
+                            </div>
+                            @if (Model.Business.Reviews.Count != 0)
+                            {
+                                <div class="col-sm-12" style="height:600px;overflow:scroll">
+                                    @foreach (var review in Model.Business.Reviews)
+                                    {
+                                        <div class="col-sm-12" style="background-color:white">
+
+                                            <div class="card">
+                                                <div class="card-header" id="ratingscss">
+                                                    @if (review.Rating == 1)
+                                                    {
+                                                        <span class="fa fa-star checked"></span>
+                                                        <span class="fa fa-star"></span>
+                                                        <span class="fa fa-star"></span>
+                                                        <span class="fa fa-star"></span>
+                                                        <span class="fa fa-star"></span>
+                                                    }
+                                                    @if (review.Rating == 2)
+                                                    {
+                                                        <span class="fa fa-star checked"></span>
+                                                        <span class="fa fa-star checked"></span>
+                                                        <span class="fa fa-star"></span>
+                                                        <span class="fa fa-star"></span>
+                                                        <span class="fa fa-star"></span>
+                                                    }
+                                                    @if (review.Rating == 3)
+                                                    {
+                                                        <span class="fa fa-star checked"></span>
+                                                        <span class="fa fa-star checked"></span>
+                                                        <span class="fa fa-star checked"></span>
+                                                        <span class="fa fa-star"></span>
+                                                        <span class="fa fa-star"></span>
+                                                    }
+                                                    @if (review.Rating == 4)
+                                                    {
+                                                        <span class="fa fa-star checked"></span>
+                                                        <span class="fa fa-star checked"></span>
+                                                        <span class="fa fa-star checked"></span>
+                                                        <span class="fa fa-star checked"></span>
+                                                        <span class="fa fa-star"></span>
+                                                    }
+                                                    @if (review.Rating == 5)
+                                                    {
+                                                        <span class="fa fa-star checked"></span>
+                                                        <span class="fa fa-star checked"></span>
+                                                        <span class="fa fa-star checked"></span>
+                                                        <span class="fa fa-star checked"></span>
+                                                        <span class="fa fa-star checked"></span>
+                                                    }
+                                                </div>
+                                                <div class="card-body">
+                                                    <blockquote class="blockquote mb-0">
+                                                        <p>@review.ReviewMessage .</p>
+                                                        <footer class="blockquote-footer">On <cite title="Source Title"><a>@review.ReviewdOn.Date</a></cite> by <cite title="Source Title"><a>@review.Name</a></cite></footer>
+                                                    </blockquote>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <h5>You have no reviews yet.</h5>
+                            }
+
+                            <div class="col-sm-12">
+                                <hr style="border-top: 1px solid #000;">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+
+                        <div id="Photos" class="col-sm-6">
+                            <h3 style="color:blue; font-size:24px; background-color:white">Photos</h3>
+                        </div>
+                        <div class="col-sm-4" style="margin:0px;padding:0px">
+                            @if (@Model.Business.Images.Count >= 7)
+                            {
+                                <h6 style="color:red">You can add upto 7 images only so please delete some images to add new image</h6>
+                                <input type="file" id="addImages" onclick="AddNew()" class="btn btn-light" value="Add New" style="text-align:right; width:120px;" disabled />
+                            }
+                            else
+                            {
+                                <form asp-action="AddImages" enctype="multipart/form-data">
+                                    <input asp-for="uploadImagesFormFile" type="file" multiple id="addImages" onclick="@("AddNew('"+Model.Business.Images.Count+"')")" class="btn btn-light" value="Add New" style="text-align:right;" />
+                                    <input id="photouploadsubmit" type="submit" value="upload" disabled />
+                                </form>
+                            }
+                        </div>
+                        <div class="col-sm-12">
+                        </div>
+
+                        @if (@Model.Business.Images.Count != 0)
+                        {
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    @{
+                                        var count = 0;
+
+                                        @foreach (var imageFile in Model.Business.Images)
+                                        {
+                                            <div class="col-sm-4">
+                                                <div class="img-wraps">
+                                                    <span class="closes" title="Delete" onclick="@("deleteImage('"+imageFile.Path+"')")">&times;</span>
+
+                                                    <img src="@Url.Content(imageFile.Path)" class="img-responsive" style="width:350px; height:150px" />
+                                                </div>
+                                            </div>
+                                            if (count == 2)
+                                            {
+                                                count = 0;
+                                                <div class="col-sm-12" style="height:10px">
+                                                </div>
+                                            }
+                                            count++;
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <h6>No photos Uploaded</h6>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-sm-12">
+    <hr style="border-top: 1px solid #000;">
+</div>
+
+@*<style>
+        .img-wraps {
+            position: relative;
+            display: inline-block;
+            font-size: 0;
+        }
+
+            .img-wraps .closes {
+                position: absolute;
+                top: 5px;
+                right: 8px;
+                z-index: 100;
+                background-color: #FFF;
+                padding: 4px 3px;
+                color: #000;
+                font-weight: bold;
+                cursor: pointer;
+                text-align: center;
+                font-size: 22px;
+                line-height: 10px;
+                border-radius: 50%;
+                border: 1px solid red;
+            }
+
+            .img-wraps:hover .closes {
+                opacity: 1;
+            }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .navbar {
+            background-color: rgb(140, 140, 140);
+            overflow: auto;
+            padding: 0px
+        }
+
+            .navbar a {
+                float: left;
+                padding: 12px;
+                color: white;
+                text-decoration: none;
+                font-size: 17px;
+                width: 16.66%; /* Four links of equal widths */
+                text-align: center;
+            }
+
+                .navbar a:hover {
+                    background-color: #000;
+                }
+
+                .navbar a:checked {
+                    background-color: #FFFFFF;
+                    color: blue;
+                }
+
+                .navbar a.active {
+                    background-color: #FFFFFF;
+                    color: blue;
+                }
+
+        media screen and (max-width: 500px) {
+            .navbar a
+
+        {
+            float: none;
+            display: block;
+            width: 100%;
+            text-align: left;
+        }
+
+        }
+
+        h3 {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        hr {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+
+        td, tr {
+            width: 250px;
+        }
+    </style>*@
+<style>
+    .chosen-container {
+        width: 100% !important;
+    }
+
+    .chosen-container-single .chosen-single {
+        height: 30px;
+        border-radius: 3px;
+        border: 1px solid #CCCCCC;
+    }
+
+        .chosen-container-single .chosen-single span {
+            padding-top: 2px;
+        }
+
+        .chosen-container-single .chosen-single div b {
+            margin-top: 2px;
+        }
+
+    .chosen-container-active .chosen-single,
+    .chosen-container-active.chosen-with-drop .chosen-single {
+        border-color: #ccc;
+        border-color: rgba(82, 168, 236, .8);
+        outline: 0;
+        outline: thin dotted \9;
+        -moz-box-shadow: 0 0 8px rgba(82, 168, 236, .6);
+        box-shadow: 0 0 8px rgba(82, 168, 236, .6)
+    }
+
+    .box {
+        margin: 20px auto;
+        width: 100%;
+        max-width: 150px;
+        height: 40px;
+        text-align: center;
+    }
+
+        .box .container-1 input {
+            width: 100%;
+        }
+</style>
+<script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+<link href="~/lib/Chosen/chosen.min.css" rel="stylesheet" />
+<script src="~/js/chosen.jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        if ($('.chosen-container').length > 0) {
+          $('.chosen-container').on('touchstart', function(e){
+            e.stopPropagation(); e.preventDefault();
+            // Trigger the mousedown event.
+            $(this).trigger('mousedown');
+          });
+        }
+        (function ($) {
+            $("#Categories").chosen(
+                { max_selected_options: 1 }
+            );
+        })(jQuery);
+    });
+</script>
+<script>
+    function EditBussinessName() {
+        $("#ModelName2").show();
+        $("#ModelName1").hide();
+        $("#editModelButton").hide();
+        $("#updateModelButton").show();
+    }
+    function EditTagLine() {
+        $("#TagLine2").show();
+        $("#TagLine1").hide();
+        $("#editTagLineButton").hide();
+        $("#updateTagLineButton").show();
+    }
+    function EditCategory() {
+        $("#Category2").show();
+        $("#Category1").hide();
+        $("#editCategoryButton").hide();
+        $("#updateCategoryButton").show();
+    }
+    function EditWebsiteLink() {
+        $("#WebsiteLink2").show();
+        $("#WebsiteLink1").hide();
+        $("#editWebsiteLinkButton").hide();
+        $("#updateWebsiteLinkButton").show();
+    }
+    function EditMobileNumber() {
+        $("#MobileNumber2").show();
+        $("#MobileNumber1").hide();
+        $("#editMobileNumberButton").hide();
+        $("#updateMobileNumberButton").show();
+    }
+    function EditWhatsAppNumber() {
+        $("#WhatsAppNumber2").show();
+        $("#WhatsAppNumber1").hide();
+        $("#editWhatsAppNumberButton").hide();
+        $("#updateWhatsAppNumberButton").show();
+    }
+    function EditAbout() {
+        $("#About2").show();
+        $("#About1").hide();
+        $("#editAboutButton").hide();
+        $("#updateAboutButton").show();
+    }
+    function EditProducts() {
+        $("#Products2").show();
+        $("#Products1").hide();
+        $("#editProductsButton").hide();
+        $("#updateProductsButton").show();
+    }
+    function EditTimings() {
+        $("#Timings2").show();
+        $("#Timings1").hide();
+        $("#editTimingsButton").hide();
+        $("#updateTimingsButton").show();
+    }
+    function EditAddress() {
+        $("#Address2").show();
+        $("#Address1").hide();
+        $("#editAddressButton").hide();
+        $("#updateAddressButton").show();
+    }
+
+    function AddNew() {
+        var formData = new FormData();
+        var totalFiles = document.getElementById("imageUploadForm").files.length;
+        //if (totalFiles <= (7 - count)) {
+        //    alert("You can add only 7 images so delete some images to add new image");
+        //}
+        //if (totalFiles > 0 && totalFiles <= (7 - count)) {
+        if (totalFiles > 0) {
+            document.getElementById("photouploadsubmit").disabled = false;
+        }
+    }
+
+    function monStart() {
+        var mondayStartTime = document.getElementById("mondayStartTime").value;
+        if (mondayStartTime != "") {
+            document.getElementById("mondayClose").disabled = true;
+        } else {
+            document.getElementById("mondayClose").disabled = false;
+        }
+    }
+
+    function monEnd() {
+        var mondayEndTime = document.getElementById("mondayEndTime").value;
+        if (mondayEndTime != "") {
+            document.getElementById("mondayClose").disabled = true;
+        } else {
+            document.getElementById("mondayClose").disabled = false;
+        }
+    }
+
+    function monClosed() {
+        var mondayClose = document.getElementById("mondayClose").checked;
+        if (mondayClose == true) {
+            document.getElementById("mondayStartTime").disabled = true;
+            document.getElementById("mondayEndTime").disabled = true;
+            document.getElementById("mondayStartTime").value = "";
+            document.getElementById("mondayEndTime").value = "";
+        }
+        if (mondayClose == false) {
+            document.getElementById("mondayStartTime").disabled = false;
+            document.getElementById("mondayEndTime").disabled = false;
+        }
+    }
+
+    function tueStart() {
+        var tuesdayStartTime = document.getElementById("tuesdayEndTime").value;
+        if (tuesdayStartTime != "") {
+            document.getElementById("tuesdayClose").disabled = true;
+        } else {
+            document.getElementById("tuesdayClose").disabled = false;
+        }
+    }
+
+    function tueEnd() {
+        var tuesdayEndTime = document.getElementById("tuesdayEndTime").value;
+        if (tuesdayEndTime != "") {
+            document.getElementById("tuesdayClose").disabled = true;
+        } else {
+            document.getElementById("tuesdayClose").disabled = false;
+        }
+    }
+
+    function tueClosed() {
+        var tuesdayClose = document.getElementById("tuesdayClose").checked;
+        if (tuesdayClose == true) {
+            document.getElementById("tuesdayStartTime").disabled = true;
+            document.getElementById("tuesdayEndTime").disabled = true;
+            document.getElementById("tuesdayStartTime").value = "";
+            document.getElementById("tuesdayEndTime").value = "";
+        } else {
+            document.getElementById("tuesdayStartTime").disabled = false;
+            document.getElementById("tuesdayEndTime").disabled = false;
+        }
+    }
+
+    function wedStart() {
+        var wednesdayStartTime = document.getElementById("wednesdayStartTime").value;
+        if (wednesdayStartTime != "") {
+            document.getElementById("wednesdayClose").disabled = true;
+        } else {
+            document.getElementById("wednesdayClose").disabled = false;
+        }
+    }
+
+    function wedEnd() {
+        var wednesdayEndTime = document.getElementById("wednesdayEndTime").value;
+        if (wednesdayEndTime != "") {
+            document.getElementById("wednesdayClose").disabled = true;
+        } else {
+            document.getElementById("wednesdayClose").disabled = false;
+        }
+    }
+
+    function wedClosed() {
+        var wednesdayClose = document.getElementById("wednesdayClose").checked;
+        if (wednesdayClose == true) {
+            document.getElementById("wednesdayStartTime").disabled = true;
+            document.getElementById("wednesdayEndTime").disabled = true;
+            document.getElementById("wednesdayStartTime").value = "";
+            document.getElementById("wednesdayEndTime").value = "";
+        } else {
+            document.getElementById("wednesdayStartTime").disabled = false;
+            document.getElementById("wednesdayEndTime").disabled = false;
+        }
+    }
+
+    function thuStart() {
+        var thursdayStartTime = document.getElementById("thursdayStartTime").value;
+        if (thursdayStartTime != "") {
+            document.getElementById("thursdayClose").disabled = true;
+        } else {
+            document.getElementById("thursdayClose").disabled = false;
+        }
+    }
+
+    function thuEnd() {
+        var thursdayEndTime = document.getElementById("thursdayEndTime").value;
+        if (thursdayEndTime != "") {
+            document.getElementById("thursdayClose").disabled = true;
+        } else {
+            document.getElementById("thursdayClose").disabled = false;
+        }
+    }
+
+    function thuClosed() {
+        var thursdayClose = document.getElementById("thursdayClose").checked;
+        if (thursdayClose == true) {
+            document.getElementById("thursdayStartTime").disabled = true;
+            document.getElementById("thursdayEndTime").disabled = true;
+            document.getElementById("thursdayStartTime").value = "";
+            document.getElementById("thursdayEndTime").value = "";
+        } else {
+            document.getElementById("thursdayStartTime").disabled = false;
+            document.getElementById("thursdayEndTime").disabled = false;
+        }
+    }
+
+    function friStart() {
+        var fridayStartTime = document.getElementById("fridayStartTime").value;
+        if (fridayStartTime != "") {
+            document.getElementById("fridayClose").disabled = true;
+        } else {
+            document.getElementById("fridayClose").disabled = false;
+        }
+    }
+
+    function friEnd() {
+        var fridayEndTime = document.getElementById("fridayEndTime").value;
+        if (fridayEndTime != "") {
+            document.getElementById("fridayClose").disabled = true;
+        } else {
+            document.getElementById("fridayClose").disabled = false;
+        }
+    }
+
+    function friClosed() {
+        var fridayClose = document.getElementById("fridayClose").checked;
+        if (fridayClose == true) {
+            document.getElementById("fridayStartTime").disabled = true;
+            document.getElementById("fridayEndTime").disabled = true;
+            document.getElementById("fridayStartTime").value = "";
+            document.getElementById("fridayEndTime").value = "";
+        } else {
+            document.getElementById("fridayStartTime").disabled = false;
+            document.getElementById("fridayEndTime").disabled = false;
+        }
+    }
+
+    function satStart() {
+        var saturdayStartTime = document.getElementById("saturdayStartTime").value;
+        if (saturdayStartTime != "") {
+            document.getElementById("saturdayClose").disabled = true;
+        } else {
+            document.getElementById("saturdayClose").disabled = false;
+        }
+    }
+
+    function satEnd() {
+        var saturdayEndTime = document.getElementById("saturdayEndTime").value;
+        if (saturdayEndTime != "") {
+            document.getElementById("saturdayClose").disabled = true;
+        } else {
+            document.getElementById("saturdayClose").disabled = false;
+        }
+    }
+
+    function satClosed() {
+        var saturdayClose = document.getElementById("saturdayClose").checked;
+        if (saturdayClose == true) {
+            document.getElementById("saturdayStartTime").disabled = true;
+            document.getElementById("saturdayEndTime").disabled = true;
+            document.getElementById("saturdayStartTime").value = "";
+            document.getElementById("saturdayEndTime").value = "";
+        } else {
+            document.getElementById("saturdayStartTime").disabled = false;
+            document.getElementById("saturdayEndTime").disabled = false;
+        }
+    }
+
+    function sunStart() {
+        var sundayStartTime = document.getElementById("sundayStartTime").value;
+        if (sundayStartTime != "") {
+            document.getElementById("sundayClose").disabled = true;
+        } else {
+            document.getElementById("sundayClose").disabled = false;
+        }
+    }
+
+    function sunEnd() {
+        var sundayEndTime = document.getElementById("sundayEndTime").value;
+        if (sundayEndTime != "") {
+            document.getElementById("sundayClose").disabled = true;
+        } else {
+            document.getElementById("sundayClose").disabled = false;
+        }
+    }
+
+    function sunClosed() {
+        var sundayClose = document.getElementById("sundayClose").checked;
+        if (sundayClose == true) {
+            document.getElementById("sundayStartTime").disabled = true;
+            document.getElementById("sundayEndTime").disabled = true;
+            document.getElementById("sundayStartTime").value = "";
+            document.getElementById("sundayEndTime").value = "";
+        } else {
+            document.getElementById("sundayStartTime").disabled = false;
+            document.getElementById("sundayEndTime").disabled = false;
+        }
+    }
+
+    function deleteImage(filepath) {
+        var key = "DeleteImage";
+        var value = filepath;
+
+        $.ajax({
+            url: "/ManageBusiness/UpdateProfile",
+            dataType: 'json',
+            data: {
+                key: key,
+                value: value
+            },
+            type: "POST",
+            cache: false,
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+                //want to return data as not boolean but string here
+            },
+            error: function (a, b, c) {
+                alert("Error")
+            }
+        });
+    }
+
+    function UpdateBussinessName() {
+
+        var key = "BusinessName";
+        var value = document.forms["updateModelform"]["ModelName2"].value;
+
+        $.ajax({
+            url: "/ManageBusiness/UpdateProfile",
+            dataType: 'json',
+            data: {
+                key: key,
+                value: value
+            },
+            type: "POST",
+            cache: false,
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+                //want to return data as not boolean but string here
+            },
+            error: function (a, b, c) {
+                alert("Error")
+            }
+        });
+    }
+
+    function UpdateTagLine() {
+
+        var key = "TagLine";
+        var value = document.forms["updateModelform"]["TagLine2"].value;
+
+        $.ajax({
+            url: "/ManageBusiness/UpdateProfile",
+            dataType: 'json',
+            data: {
+                key: key,
+                value: value
+            },
+            type: "POST",
+            cache: false,
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+                //want to return data as not boolean but string here
+            },
+            error: function (a, b, c) {
+                alert("Error")
+            }
+        });
+    }
+
+    function UpdateMobileNumber() {
+
+        var key = "MobileNumber";
+        var value = document.forms["updateModelform"]["MobileNumber2"].value;
+
+        $.ajax({
+            url: "/ManageBusiness/UpdateProfile",
+            dataType: 'json',
+            data: {
+                key: key,
+                value: value
+            },
+            type: "POST",
+            cache: false,
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+                //want to return data as not boolean but string here
+            },
+            error: function (a, b, c) {
+                alert("Error")
+            }
+        });
+    }
+
+    function UpdateWebsiteLink() {
+
+        var key = "WebsiteLink";
+        var value = document.forms["updateModelform"]["WebsiteLink2"].value;
+
+        $.ajax({
+            url: "/ManageBusiness/UpdateProfile",
+            dataType: 'json',
+            data: {
+                key: key,
+                value: value
+            },
+            type: "POST",
+            cache: false,
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+                //want to return data as not boolean but string here
+            },
+            error: function (a, b, c) {
+                alert("Error")
+            }
+        });
+    }
+
+    function UpdateCategory() {
+
+        var key = "Category";
+        var value = $('[id="Categories"]').val();
+
+        $.ajax({
+            url: "/ManageBusiness/UpdateProfile",
+            dataType: 'json',
+            data: {
+                key: key,
+                value: value
+            },
+            type: "POST",
+            cache: false,
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+                //want to return data as not boolean but string here
+            },
+            error: function (a, b, c) {
+                alert("Error")
+            }
+        });
+    }
+
+    function UpdateWhatsAppNumber() {
+
+        var key = "WhatsAppNumber";
+        var value = document.forms["updateModelform"]["WhatsAppNumber2"].value;
+
+        $.ajax({
+            url: "/ManageBusiness/UpdateProfile",
+            dataType: 'json',
+            data: {
+                key: key,
+                value: value
+            },
+            type: "POST",
+            cache: false,
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+                //want to return data as not boolean but string here
+            },
+            error: function (a, b, c) {
+                alert("Error")
+            }
+        });
+    }
+    function UpdateAbout() {
+
+        var key = "About";
+        var value = document.forms["updateModelform"]["About2"].value;
+
+        $.ajax({
+            url: "/ManageBusiness/UpdateProfile",
+            dataType: 'json',
+            data: {
+                key: key,
+                value: value
+            },
+            type: "POST",
+            cache: false,
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+                //want to return data as not boolean but string here
+            },
+            error: function (a, b, c) {
+                alert("Error")
+            }
+        });
+    }
+    function UpdateProducts() {
+
+        var key = "Products";
+        var value = document.forms["updateModelform"]["Products2"].value;
+
+        $.ajax({
+            url: "/ManageBusiness/UpdateProfile",
+            dataType: 'json',
+            data: {
+                key: key,
+                value: value
+            },
+            type: "POST",
+            cache: false,
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+                //want to return data as not boolean but string here
+            },
+            error: function (a, b, c) {
+                alert("Error")
+            }
+        });
+    }
+
+    function UpdateAddress() {
+
+        var AddressLine1 = document.forms["updateModelform"]["Business.Address.AddressLine1"].value;
+        //var AddressLine2 = document.forms["registerForm"]["Address.AddressLine2"].value;
+        var Area = document.forms["updateModelform"]["Business.Address.Area"].value;
+        var City = document.forms["updateModelform"]["Business.Address.City"].value;
+        var PinCode = document.forms["updateModelform"]["Business.Address.PinCode"].value;
+        var State = $('[name="state"]').val();
+        var Country = "India";
+
+        Address = {
+            AddressLine1: AddressLine1,
+            AddressLine2: null,
+            Area: Area,
+            City: City,
+            PinCode: PinCode,
+            State: State,
+            Country: Country
+        }
+        $.ajax({
+            url: "/ManageBusiness/UpdateAddress",
+            dataType: 'json',
+            data: {
+                location: Address
+            },
+            type: "POST",
+            cache: false,
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+                //want to return data as not boolean but string here
+            },
+            error: function (a, b, c) {
+                alert("Error")
+            }
+        });
+    }
+
+    function UpdateTimings() {
+        var validated = true;
+        var mondayStartTime = document.getElementById("mondayStartTime").value;
+        var mondayEndTime = document.getElementById("mondayEndTime").value;
+        var mondayClose = document.getElementById("mondayClose").checked;
+
+        if (mondayClose == false) {
+            if (mondayStartTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter start time for Monday, if it's closed click on close");
+            }
+            if (mondayEndTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter end time for Monday, if it's closed click on close");
+            }
+        }
+        var tuesdayStartTime = document.getElementById("tuesdayStartTime").value;
+        var tuesdayEndTime = document.getElementById("tuesdayEndTime").value;
+        var tuesdayClose = document.getElementById("tuesdayClose").checked;
+        if (tuesdayClose == false) {
+            if (tuesdayStartTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter start time for Tuesday, if it's closed click on close");
+            }
+            if (tuesdayEndTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter end time for Tuesday, if it's closed click on close");
+            }
+        }
+
+        var wednesdayStartTime = document.getElementById("wednesdayStartTime").value;
+        var wednesdayEndTime = document.getElementById("wednesdayEndTime").value;
+        var wednesdayClose = document.getElementById("wednesdayClose").checked;
+        if (wednesdayClose == false) {
+            if (wednesdayStartTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter start time for Wednesday, if it's closed click on close");
+            }
+            if (wednesdayEndTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter end time for Wednesday, if it's closed click on close");
+            }
+        }
+
+        var thursdayStartTime = document.getElementById("thursdayStartTime").value;
+        var thursdayEndTime = document.getElementById("thursdayEndTime").value;
+        var thursdayClose = document.getElementById("thursdayClose").checked;
+        if (thursdayClose == false && validated == true) {
+            if (thursdayStartTime == "") {
+                validated = false;
+                alert("Please enter start time for Thursday, if it's closed click on close");
+            }
+            if (thursdayEndTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter end time for Thursday, if it's closed click on close");
+            }
+        }
+
+        var fridayStartTime = document.getElementById("fridayStartTime").value;
+        var fridayEndTime = document.getElementById("fridayEndTime").value;
+        var fridayClose = document.getElementById("fridayClose").checked;
+        if (fridayClose == false && validated == true) {
+            if (fridayStartTime == "") {
+                validated = false;
+                alert("Please enter start time for Friday, if it's closed click on close");
+            }
+            if (fridayEndTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter end time for Friday, if it's closed click on close");
+            }
+        }
+
+        var saturdayStartTime = document.getElementById("saturdayStartTime").value;
+        var saturdayEndTime = document.getElementById("saturdayEndTime").value;
+        var saturdayClose = document.getElementById("saturdayClose").checked;
+        if (saturdayClose == false) {
+            if (saturdayStartTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter start time for Saturday, if it's closed click on close");
+            }
+            if (saturdayEndTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter end time for Saturday, if it's closed click on close");
+            }
+        }
+
+        var sundayStartTime = document.getElementById("sundayStartTime").value;
+        var sundayEndTime = document.getElementById("sundayEndTime").value;
+        var sundayClose = document.getElementById("sundayClose").checked;
+        if (sundayClose == false) {
+            if (sundayStartTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter start time for Sunday, if it's closed click on close");
+            }
+            if (sundayEndTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter end time for Sunday, if it's closed click on close");
+            }
+        }
+
+        Timings = {
+            Monday: {
+                StartTime: mondayStartTime,
+                EndTime: mondayEndTime,
+                Closed: mondayClose,
+            },
+            Tuesday: {
+                StartTime: tuesdayStartTime,
+                EndTime: tuesdayEndTime,
+                Closed: tuesdayClose
+            },
+            Wednesday: {
+                StartTime: wednesdayStartTime,
+                EndTime: wednesdayEndTime,
+                Closed: wednesdayClose
+            },
+            Thursday: {
+                StartTime: thursdayStartTime,
+                EndTime: thursdayEndTime,
+                Closed: thursdayClose
+            },
+            Friday: {
+                StartTime: fridayStartTime,
+                EndTime: fridayEndTime,
+                Closed: fridayClose,
+            },
+            Saturday: {
+                StartTime: saturdayStartTime,
+                EndTime: saturdayEndTime,
+                Closed: saturdayClose
+            },
+            Sunday: {
+                StartTime: sundayStartTime,
+                EndTime: sundayEndTime,
+                Closed: sundayClose
+            }
+        }
+
+        if (validated == true) {
+            $.ajax({
+                url: "/ManageBusiness/UpdateTimings",
+                dataType: 'json',
+                data: {
+                    timings: Timings
+                },
+                type: "POST",
+                cache: false,
+                success: function (data) {
+                    alert(data);
+                    window.location.reload();
+                    //want to return data as not boolean but string here
+                },
+                error: function (a, b, c) {
+                    alert("Error")
+                }
+            });
+        }
+
+    }
+
+</script>
+

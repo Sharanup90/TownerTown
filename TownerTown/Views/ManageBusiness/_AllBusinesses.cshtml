@@ -1,0 +1,115 @@
+﻿@model IEnumerable<TownerTown.Entities.Business>
+
+<div class="col-sm-9 listview" style="padding-left:0px">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-12 listview" style="">
+            <div class="col-md-12 no-padding lib-item" data-category="view">
+                <div class="lib-panel">
+                    <div class="row box-shadow">
+                        <div class="col-md-3" style="padding-left: 0px; padding-right: 0px;">
+                            <img class="lib-img-show" src="http://lorempixel.com/850/850/?random=123" style="height:130px">
+                        </div>
+                        <div class="col-md-9" style="padding-left: 0px;margin-left: 0px;">
+                            <div class="lib-row lib-header">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-11" style=" margin-left: 0px;padding-left: 0px; font-size: 18px;">
+                                            @item.BusinessName
+                                        </div>
+                                        <div class="col-sm-1" style="color:orangered;">****</div>
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-11" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
+                                            <div class="lib-header-seperator"></div>
+                                        </div>
+                                        <div class="col-sm-1" style="font-size: 13px;">Open</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="lib-row lib-desc" style="padding-right:0px">
+                                <div class="col">@item.Address.AddressLine1</div>
+
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-9" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
+                                            <div class="col">@item.Address.AddressLine2</div>
+                                            @item.Address.Area, @item.Address.City, @item.Address.State
+                                        </div>
+                                        <div class="col-sm-3" style="margin-top:10px">
+                                            <div class="row">
+
+                                                <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/call.jpg" /></div>
+                                                <div class="col" style="width:40px; height:40px; "><img style="width:32px; margin: 4px 7px 0px 7px;" src="~/lib/images/Logos/whtasapp.jpg" /></div>
+                                                <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/location.jpg" /></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col-sm-12 listview" style="">
+        <div class="col-md-12 no-padding lib-item" data-category="view">
+            <div class="lib-panel">
+                <div class="row box-shadow">
+                    <div class="col-md-3" style="padding-left: 0px; padding-right: 0px;">
+                        <img class="lib-img-show" src="http://lorempixel.com/850/850/?random=123" style="height:130px">
+                    </div>
+                    <div class="col-md-9" style="padding-left: 0px;margin-left: 0px;">
+                        <div class="lib-row lib-header">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-11" style=" margin-left: 0px;padding-left: 0px; font-size: 18px;">
+                                        Shree Veerabhadreshwara Kirana Store
+                                    </div>
+                                    <div class="col-sm-1" style="color:orangered; padding-left: 0px;">***</div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-11" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
+                                        <div class="lib-header-seperator"></div>
+                                    </div>
+                                    <div class="col-sm-1" style="font-size: 13px;">Open</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="lib-row lib-desc" style="padding-right:0px">
+                            <div class="col">#204, Gauli galli , infront of siddharud math</div>
+
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-9" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
+                                        <div class="col">Hale hibballi</div>
+                                        560029, Hubblli, Karnataka
+                                    </div>
+                                    <div class="col-sm-3" style="margin-top:10px">
+                                        <div class="row">
+
+                                            <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/call.jpg" /></div>
+                                            <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/whtasapp.jpg" /></div>
+                                            <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/location.jpg" /></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

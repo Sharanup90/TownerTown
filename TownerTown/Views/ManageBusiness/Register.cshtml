@@ -1,0 +1,1036 @@
+﻿@model TownerTown.Web.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+@*<h1>Register</h1>
+
+    <h4>Business</h4>
+    <hr />*@
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+@ViewBag.Message
+<div class="Register container-fluid">
+    <h1 class="well">Registration Form</h1>
+    <h6>@ViewBag.ErrorMessage</h6>
+    <div class="col-lg-12 well">
+        <div class="row">
+            <form asp-action="RegisterFormFilled" asp-controller="ManageBusiness" style="width:100%" id="registerForm" name="registerForm" enctype="multipart/form-data" onsubmit="return Register()">
+                <div class="col-sm-12">
+                    <div id="hover_bkgr_fricc">
+                        <span id="helper"></span>
+                        <div>
+                            <div id="popupCloseButton">&times;</div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 style="text-align:center">Enter OTP</h4>
+                                </div>
+                                <div class="card-body">
+                                    <input style="text-align:center" pattern="\d*" id="inputOTP" class="form-control" type="number" maxlength="4" />
+                                </div>
+                                <a href="#" id="OTPSubmit" class="btn btn-primary" style="text-align:center">Submit</a>
+                                <a href="#" id="ResendOTP" style="text-align:center">Resend</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            <label>First Name</label>
+                            <input required type="text" id="firstname" asp-for="Business.BusinessOwner.FirstName" placeholder="Enter First Name Here.." class="form-control">
+                            <span asp-validation-for="Business.BusinessOwner.FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label>Last Name</label>
+                            <input required type="text" id="lastname" asp-for="Business.BusinessOwner.LastName" placeholder="Enter Last Name Here.." class="form-control">
+                            <span asp-validation-for="Business.BusinessOwner.LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="width:60%">
+                        <label>Business Name</label>
+                        <input required type="text" asp-for="Business.BusinessName" placeholder="like Dr Reddy Hospital" class="form-control" maxlength="65">
+                        <span asp-validation-for="Business.BusinessName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" style="width:60%">
+                        <label>Tag Line</label>
+                        <input required type="text" asp-for="Business.TagLine" placeholder="like Eye Care Hospital" class="form-control" maxlength="40">
+                        <span asp-validation-for="Business.TagLine" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 form-group">
+                            <label>Email</label>
+                            <input type="email" id="email" asp-for="Business.BusinessOwner.Email" placeholder="Enter your business email address" class="form-control">
+                            <span asp-validation-for="Business.BusinessOwner.Email" class="text-danger"></span>
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <label>Mobile Number</label>
+                            <input required maxlength="10" pattern="^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$" type="number" asp-for="Business.BusinessOwner.MobileNumber" placeholder="Enter your contact details.." class="form-control">
+                            <span asp-validation-for="Business.BusinessOwner.MobileNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <label>WhatsApp Number</label>
+                            <input required maxlength="10" pattern="^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$" type="number" asp-for="Business.BusinessOwner.WhatsAppNumber" placeholder="Enter your WhatsApp Number.." class="form-control">
+                            <span asp-validation-for="Business.BusinessOwner.WhatsAppNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-sm-12 form-group" id="OTP" style="display:none;">
+                            <input type="number" id="EnteredOTP" maxlength="4" class="" placeholder="_ _ _ _" />
+                            <button onclick="VarifyAndSubmit()">Varify</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea required placeholder="Enter Address Here.." asp-for="Business.Address.AddressLine1" rows="3" class="form-control"></textarea>
+                        <span asp-validation-for="Business.Address.AddressLine1" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 form-group">
+                            <label>Area</label>
+                            <input required type="text" asp-for="Business.Address.Area" placeholder="Enter Area Name Here.." class="form-control">
+                            <span asp-validation-for="Business.Address.Area" class="text-danger"></span>
+                        </div>
+                        <div class="col-sm-3 form-group">
+                            <label>City</label>
+                            <input required type="text" asp-for="Business.Address.City" placeholder="Enter City Name Here.." class="form-control">
+                            <span asp-validation-for="Business.Address.City" class="text-danger"></span>
+                        </div>
+                        <div class="col-sm-3 form-group">
+                            <label>State</label>
+                            <input required asp-for="Business.Address.State" placeholder="Choose State" list="states" name="state" id="state" class="form-control">
+                            <datalist id="states">
+                                <option value="">------------Select State------------</option>
+                                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chandigarh">Chandigarh</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</option>
+                                <option value="Daman and Diu">Daman and Diu</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Lakshadweep">Lakshadweep</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Orissa">Orissa</option>
+                                <option value="Pondicherry">Pondicherry</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttaranchal">Uttaranchal</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="West Bengal">West Bengal</option>
+                                <option value="Ladakh">Ladakh</option>
+                                <option value="Kashmir">Kashmir</option>
+                            </datalist>
+                            <input type="text" asp-for="Business.Address.State" hidden />
+                            <span asp-validation-for="Business.Address.State" class="text-danger"></span>
+                        </div>
+                        <input type="text" asp-for="Business.Address.Country" hidden />
+                        <div class="col-sm-3 form-group">
+                            <label>PinCode</label>
+                            <input required pattern="[0-9]{4}" maxlength="6" type="number" asp-for="Business.Address.PinCode" placeholder="Enter PinCode Here.." class="form-control">
+                            <span asp-validation-for="Business.Address.PinCode" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="width:60%">
+                        <label>Business Type</label><br />
+                        <input type="text" asp-for="Business.Category.CategoryName" hidden />
+                        @Html.ListBoxFor(Model => Model.SearchViewModel.selectedCategories, new SelectList(Model.SearchViewModel.Categories, "CategoryName", "CategoryName"), new { Id = "Categories", multiple = "multiple" })
+                        <span asp-validation-for="SearchViewModel.selectedCategories" class="text-danger"></span>
+                    </div>
+
+                    @*<div class="form-group" style="width:60%">
+            <label>Business Type</label><br />
+            <input required type="text" class="form-control" asp-for="Category.CategoryName" placeholder="Select Category" list="categories" name="CategoryName" id="typeOfBusiness" required>
+            <datalist id="categories">
+                <option value="Groceries"></option>
+                <option value="Firefox"></option>
+                <option value="Chrome"></option>
+                <option value="Opera"></option>
+                <option value="Safari"></option>
+            </datalist>
+        </div>*@
+                    <div class="form-group">
+                        <label>About</label>
+                        <textarea required placeholder="About the shop.." asp-for="Business.About" rows="3" class="form-control"></textarea>
+                        <span asp-validation-for="Business.About" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Products</label>
+                        <textarea required placeholder="Enter products/services list.." asp-for="Business.Products" rows="3" class="form-control"></textarea>
+                        <span asp-validation-for="Business.Products" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Timings</label>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Closed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Monday</td>
+                                    <td><input type="time" asp-for="Business.Timings.Monday.StartTime" onchange="monStart()" id="mondayStartTime" class="input-xlarge"></td>
+                                    <td><input type="time" asp-for="Business.Timings.Monday.EndTime" onchange="monEnd()" id="mondayEndTime" class="input-xlarge"></td>
+                                    <td><input asp-for="Business.Timings.Monday.Closed" type="checkbox" onchange="monClosed()" id="mondayClose" class="input-xlarge"></td>
+                                </tr>
+                                <tr>
+                                    <td>Tuesday</td>
+                                    <td><input type="time" asp-for="Business.Timings.Tuesday.StartTime" onchange="tueStart()" id="tuesdayStartTime" class="input-xlarge"></td>
+                                    <td><input type="time" asp-for="Business.Timings.Tuesday.EndTime" onchange="tueEnd()" id="tuesdayEndTime" class="input-xlarge"></td>
+                                    <td><input asp-for="Business.Timings.Tuesday.Closed" type="checkbox" onchange="tueClosed()" id="tuesdayClose" class="input-xlarge"></td>
+                                </tr>
+                                <tr>
+                                    <td>Wednesday</td>
+                                    <td><input type="time" asp-for="Business.Timings.Wednesday.StartTime" onchange="wedStart()" id="wednesdayStartTime" class="input-xlarge"></td>
+                                    <td><input type="time" asp-for="Business.Timings.Wednesday.EndTime" onchange="wedEnd()" id="wednesdayEndTime" class="input-xlarge"></td>
+                                    <td><input asp-for="Business.Timings.Wednesday.Closed" type="checkbox" onchange="wedClosed()" id="wednesdayClose" class="input-xlarge"></td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday</td>
+                                    <td><input type="time" asp-for="Business.Timings.Thursday.StartTime" onchange="thuStart()" id="thursdayStartTime" class="input-xlarge"></td>
+                                    <td><input type="time" asp-for="Business.Timings.Thursday.EndTime" onchange="thuEnd()" id="thursdayEndTime" class="input-xlarge"></td>
+                                    <td><input asp-for="Business.Timings.Thursday.Closed" type="checkbox" onchange="thuClosed()" id="thursdayClose" class="input-xlarge"></td>
+                                </tr>
+                                <tr>
+                                    <td>Friday</td>
+                                    <td><input type="time" asp-for="Business.Timings.Friday.StartTime" onchange="friStart()" id="fridayStartTime" class="input-xlarge"></td>
+                                    <td><input type="time" asp-for="Business.Timings.Friday.EndTime" onchange="friEnd()" id="fridayEndTime" class="input-xlarge"></td>
+                                    <td><input asp-for="Business.Timings.Friday.Closed" type="checkbox" onchange="friClosed()" id="fridayClose" class="input-xlarge"></td>
+                                </tr>
+                                <tr>
+                                    <td>Saturday</td>
+                                    <td><input type="time" asp-for="Business.Timings.Saturday.StartTime" onchange="satStart()" id="saturdayStartTime" class="input-xlarge"></td>
+                                    <td><input type="time" asp-for="Business.Timings.Saturday.EndTime" onchange="satEnd()" id="saturdayEndTime" class="input-xlarge"></td>
+                                    <td><input asp-for="Business.Timings.Saturday.Closed" type="checkbox" onchange="satClosed()" id="saturdayClose" class="input-xlarge"></td>
+                                </tr>
+                                <tr>
+                                    <td>Sunday</td>
+                                    <td><input type="time" asp-for="Business.Timings.Sunday.StartTime" onchange="sunStart()" id="sundayStartTime" class="input-xlarge"></td>
+                                    <td><input type="time" asp-for="Business.Timings.Sunday.EndTime" onchange="sunEnd()" id="sundayEndTime" class="input-xlarge"></td>
+                                    <td><input asp-for="Business.Timings.Sunday.Closed" type="checkbox" onchange="sunClosed()" id="sundayClose" class="input-xlarge"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group" style="width:60%">
+                        <label>Website</label>
+                        <input type="text" asp-for="Business.WebsiteLink" placeholder="Enter Website Name or link here.." class="form-control">
+                    </div>
+                    <div class="form-group" style="width:40%">
+                        <label>UserName</label>
+                        <input required type="text" id="username" asp-for="Business.BusinessOwner.UserName" placeholder="Enter username more than 4 characters.." class="form-control">
+                        <span asp-validation-for="Business.About" class="text-danger"></span>
+                    </div>
+                    <div required class="form-group" style="width:40%">
+                        <label>Password</label>
+                        <input type="text" id="password" asp-for="Business.BusinessOwner.Password" placeholder="Enter Password should be complex enough.." class="form-control">
+                        <span asp-validation-for="Business.BusinessOwner.Password" class="text-danger"></span>
+                    </div>
+                    <div required class="form-group" style="width:40%">
+                        <label>Confirm Password</label>
+                        <input type="text" id="ConfirmPassword" placeholder="Re-Enter your password to varify.." class="form-control">
+                    </div>
+                    <div required class="form-group" style="width:40%">
+                        <label>Upload Store/Office Images</label>
+                        <input asp-for="uploadImagesFormFile" multiple id="imageUploadForm" />
+                    </div>
+                    <div required class="form-group" style="width:40%">
+                        <label><a href="/Home/Privacy">Terms And Conditions*</a></label>
+                        <input id="termsAndConditions" type="checkbox" checked />
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 form-group">
+                            <input type="submit" value="submit" class="RegisterSubmitButton btn btn-lg btn-info">
+                            <input type="button" value="Cancel" style="border: 1px solid;" class="RegisterSubmitButton btn btn-link">
+                        </div>
+                        <div class="col-sm-2 form-group">
+
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+            <button id="trigger_popup_fricc">Click here to show the popup</button>
+
+           
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+@*<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>*@
+<link href="~/lib/Chosen/chosen.min.css" rel="stylesheet" />
+<script src="~/js/chosen.jquery.min.js"></script>
+<style>
+    table th {
+        width: 80px;
+    }
+
+    td {
+        width: 80px;
+    }
+
+    .chosen-container {
+        width: 100% !important;
+    }
+
+    .chosen-container-single .chosen-single {
+        height: 30px;
+        border-radius: 3px;
+        border: 1px solid #CCCCCC;
+    }
+
+        .chosen-container-single .chosen-single span {
+            padding-top: 2px;
+        }
+
+        .chosen-container-single .chosen-single div b {
+            margin-top: 2px;
+        }
+
+    .chosen-container-active .chosen-single,
+    .chosen-container-active.chosen-with-drop .chosen-single {
+        border-color: #ccc;
+        border-color: rgba(82, 168, 236, .8);
+        outline: 0;
+        outline: thin dotted \9;
+        -moz-box-shadow: 0 0 8px rgba(82, 168, 236, .6);
+        box-shadow: 0 0 8px rgba(82, 168, 236, .6)
+    }
+
+    .box {
+        margin: 20px auto;
+        width: 100%;
+        max-width: 150px;
+        height: 40px;
+        text-align: center;
+    }
+
+        .box .container-1 input {
+            width: 100%;
+        }
+</style>
+<style>
+    /* Popup box BEGIN */
+#hover_bkgr_fricc{
+   /*background:rgba(0,0,0,.4);*/ 
+    cursor:pointer;
+    display:none;
+    height:100%;
+    /*position:fixed;*/
+     position:inherit;
+    text-align:center;
+    top:0;
+    width:100%;
+    z-index:10000;
+}
+#hover_bkgr_fricc #helper{
+    display:inline-block;
+    height:100%;
+    vertical-align:middle;
+}
+#hover_bkgr_fricc > div {
+    background-color: #fff;
+    box-shadow: 10px 10px 60px #555;
+    display: inline-block;
+    height: auto;
+    max-width: 551px;
+    min-height: 100px;
+    vertical-align: middle;
+    width: 75%;
+    position: relative;
+    border-radius: 8px;
+    padding: 15px 5%;
+}
+#popupCloseButton {
+    background-color: #fff;
+    border: 3px solid #999;
+    border-radius: 50px;
+    cursor: pointer;
+    display: inline-block;
+    font-family: arial;
+    font-weight: bold;
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 25px;
+    line-height: 30px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+#popupCloseButton:hover {
+    background-color: #ccc;
+}
+#trigger_popup_fricc {
+    cursor: pointer;
+    font-size: 20px;
+    margin: 20px;
+    display: inline-block;
+    font-weight: bold;
+}
+/* Popup box BEGIN */
+</style>
+<script>
+    $(document).ready(function () {
+        if ($('.chosen-container').length > 0) {
+            $('.chosen-container').on('touchstart', function (e) {
+                e.stopPropagation(); e.preventDefault();
+                // Trigger the mousedown event.
+                $(this).trigger('mousedown');
+            });
+        }
+        (function ($) {
+            $("#Categories").chosen(
+                { max_selected_options: 1 }
+            );
+        })(jQuery);
+    });
+</script>
+
+<script>
+    $("registerForm").submit(function () {
+        if ($(this).valid()) {  //<<< I was missing this check
+            return false;
+        }
+    });
+    $("#trigger_popup_fricc").click(function () {
+        $('#hover_bkgr_fricc').show();
+        $('#inputOTP').focus();       
+      });
+     $('#hover_bkgr_fricc').click(function () {
+        //$('#hover_bkgr_fricc').hide();
+     });
+     $('#popupCloseButton').click(function () {
+         $('#hover_bkgr_fricc').hide();
+     });
+    $('#OTPSubmit').click(function () {      
+        $('#hover_bkgr_fricc').hide();
+        if ($('#inputOTP').val() == localStorage.getItem("OTP")) {
+            localStorage.clear();
+            //document.getElementById('registerForm').submit();
+        } else {
+            alert("The OTP you have entered is incorrect.Please click on resend button if you have not received");
+        }
+    });
+    $('#ResendOTP').click(function () {
+        var MobileNumber = document.forms["registerForm"]["Business.BusinessOwner.MobileNumber"].value;
+         var otp = Math.floor(1000 + Math.random() * 9000);
+
+            $.ajax({
+                url: "https://2factor.in/API/V1/27a4b12d-f59b-11ea-9fa5-0200cd936042/SMS/"+MobileNumber+"/"+otp+"/TXTSAA",
+                type: "POST",
+                success: function (response) {
+                    if (response.Status == "Success") {
+                       localStorage.setItem("OTP", otp);
+                        alert("OTP Sent to the given number.Please enter it.");
+                        $('#hover_bkgr_fricc').show();
+                        $('#inputOTP').focus(); 
+                       return false;
+                    } else {
+                        // DoSomethingElse()
+                       alert("Unable to send OTP.Please check the number you have provided.");
+                       return false;
+                    }
+                  
+                },
+                error: function (response) {
+                    alert("Error!")
+                }
+            });
+    });
+</script>
+
+<script>
+
+    function monStart() {
+         var mondayStartTime = document.getElementById("mondayStartTime").value;
+        if (mondayStartTime != "") {
+            document.getElementById("mondayClose").disabled = true;
+        }else {
+             document.getElementById("mondayClose").disabled = false;
+         }
+    }
+
+    function monEnd() {
+         var mondayEndTime = document.getElementById("mondayEndTime").value;
+         if (mondayEndTime != "") {
+             document.getElementById("mondayClose").disabled = true;
+         } else {
+             document.getElementById("mondayClose").disabled = false;
+         }
+    }
+
+    function monClosed() {
+         var mondayClose = document.getElementById("mondayClose").checked;
+         if (mondayClose == true) {
+             document.getElementById("mondayStartTime").disabled = true;
+             document.getElementById("mondayEndTime").disabled = true;
+             document.getElementById("mondayStartTime").value = "";
+             document.getElementById("mondayEndTime").value = "";
+         }
+         if (mondayClose == false) {
+             document.getElementById("mondayStartTime").disabled = false;
+             document.getElementById("mondayEndTime").disabled = false;
+        }
+    }
+
+    function tueStart() {
+       var tuesdayStartTime = document.getElementById("tuesdayEndTime").value;
+        if (tuesdayStartTime != "") {
+            document.getElementById("tuesdayClose").disabled = true;
+        } else {
+             document.getElementById("tuesdayClose").disabled = false;
+        }
+    }
+
+    function tueEnd() {
+       var tuesdayEndTime = document.getElementById("tuesdayEndTime").value;
+        if (tuesdayEndTime != "") {
+            document.getElementById("tuesdayClose").disabled = true;
+        } else {
+             document.getElementById("tuesdayClose").disabled = false;
+        }
+    }
+
+    function tueClosed() {
+        var tuesdayClose = document.getElementById("tuesdayClose").checked;
+        if (tuesdayClose == true) {
+            document.getElementById("tuesdayStartTime").disabled = true;
+            document.getElementById("tuesdayEndTime").disabled = true;
+            document.getElementById("tuesdayStartTime").value = "";
+            document.getElementById("tuesdayEndTime").value = "";
+        } else {
+            document.getElementById("tuesdayStartTime").disabled = false;
+            document.getElementById("tuesdayEndTime").disabled = false;
+        }
+    }
+
+    function wedStart() {
+       var wednesdayStartTime = document.getElementById("wednesdayStartTime").value;
+        if (wednesdayStartTime != "") {
+            document.getElementById("wednesdayClose").disabled = true;
+        } else {
+            document.getElementById("wednesdayClose").disabled = false;
+        }
+    }
+
+    function wedEnd() {
+       var wednesdayEndTime = document.getElementById("wednesdayEndTime").value;
+        if (wednesdayEndTime != "") {
+            document.getElementById("wednesdayClose").disabled = true;
+        } else {
+             document.getElementById("wednesdayClose").disabled = false;
+        }
+    }
+
+    function wedClosed() {
+        var wednesdayClose = document.getElementById("wednesdayClose").checked;
+        if (wednesdayClose == true) {
+            document.getElementById("wednesdayStartTime").disabled = true;
+            document.getElementById("wednesdayEndTime").disabled = true;
+            document.getElementById("wednesdayStartTime").value = "";
+            document.getElementById("wednesdayEndTime").value = "";
+        } else {
+             document.getElementById("wednesdayStartTime").disabled = false;
+             document.getElementById("wednesdayEndTime").disabled = false;
+        }
+    }
+
+    function thuStart() {
+       var thursdayStartTime = document.getElementById("thursdayStartTime").value;
+        if (thursdayStartTime != "") {
+            document.getElementById("thursdayClose").disabled = true;
+        } else {
+             document.getElementById("thursdayClose").disabled = false;
+        }
+    }
+
+    function thuEnd() {
+       var thursdayEndTime = document.getElementById("thursdayEndTime").value;
+        if (thursdayEndTime != "") {
+            document.getElementById("thursdayClose").disabled = true;
+        }else {
+             document.getElementById("thursdayClose").disabled = false;
+        }
+    }
+
+    function thuClosed() {
+        var thursdayClose = document.getElementById("thursdayClose").checked;
+        if (thursdayClose == true) {
+            document.getElementById("thursdayStartTime").disabled = true;
+            document.getElementById("thursdayEndTime").disabled = true;
+            document.getElementById("thursdayStartTime").value = "";
+            document.getElementById("thursdayEndTime").value = "";
+        } else {
+             document.getElementById("thursdayStartTime").disabled = false;
+            document.getElementById("thursdayEndTime").disabled = false;
+        }
+    }
+
+    function friStart() {
+       var fridayStartTime = document.getElementById("fridayStartTime").value;
+        if (fridayStartTime != "") {
+            document.getElementById("fridayClose").disabled = true;
+        } else {
+             document.getElementById("fridayClose").disabled = false;
+        }
+    }
+
+    function friEnd() {
+       var fridayEndTime = document.getElementById("fridayEndTime").value;
+        if (fridayEndTime != "") {
+            document.getElementById("fridayClose").disabled = true;
+        }else {
+             document.getElementById("fridayClose").disabled = false;
+        }
+    }
+
+    function friClosed() {
+        var fridayClose = document.getElementById("fridayClose").checked;
+        if (fridayClose == true) {
+            document.getElementById("fridayStartTime").disabled = true;
+            document.getElementById("fridayEndTime").disabled = true;
+            document.getElementById("fridayStartTime").value = "";
+            document.getElementById("fridayEndTime").value = "";
+        } else {
+             document.getElementById("fridayStartTime").disabled = false;
+            document.getElementById("fridayEndTime").disabled = false;
+        }
+    }
+
+    function satStart() {
+       var saturdayStartTime = document.getElementById("saturdayStartTime").value;
+        if (saturdayStartTime != "") {
+            document.getElementById("saturdayClose").disabled = true;
+        } else {
+            document.getElementById("saturdayClose").disabled = false;
+        }
+    }
+
+    function satEnd() {
+       var saturdayEndTime = document.getElementById("saturdayEndTime").value;
+        if (saturdayEndTime != "") {
+            document.getElementById("saturdayClose").disabled = true;
+        }else {
+            document.getElementById("saturdayClose").disabled = false;
+        }
+    }
+
+    function satClosed() {
+        var saturdayClose = document.getElementById("saturdayClose").checked;
+        if (saturdayClose == true) {
+            document.getElementById("saturdayStartTime").disabled = true;
+            document.getElementById("saturdayEndTime").disabled = true;
+            document.getElementById("saturdayStartTime").value = "";
+            document.getElementById("saturdayEndTime").value = "";
+        } else {
+            document.getElementById("saturdayStartTime").disabled = false;
+             document.getElementById("saturdayEndTime").disabled = false;
+        }
+    }
+
+    function sunStart() {
+       var sundayStartTime = document.getElementById("sundayStartTime").value;
+        if (sundayStartTime != "") {
+            document.getElementById("sundayClose").disabled = true;
+        } else {
+            document.getElementById("sundayClose").disabled = false;
+        }
+    }
+
+    function sunEnd() {
+       var sundayEndTime = document.getElementById("sundayEndTime").value;
+        if (sundayEndTime != "") {
+            document.getElementById("sundayClose").disabled = true;
+        } else {
+             document.getElementById("sundayClose").disabled = false;
+        }
+    }
+
+    function sunClosed() {
+        var sundayClose = document.getElementById("sundayClose").checked;
+        if (sundayClose == true) {
+            document.getElementById("sundayStartTime").disabled = true;
+            document.getElementById("sundayEndTime").disabled = true;
+            document.getElementById("sundayStartTime").value = "";
+            document.getElementById("sundayEndTime").value = "";
+        } else {
+            document.getElementById("sundayStartTime").disabled = false;
+             document.getElementById("sundayEndTime").disabled = false;
+        }
+     }
+
+    function Register() {
+        var validated = true;
+        var formData = new FormData();
+         var totalFiles = document.getElementById("imageUploadForm").files.length;
+         for (var i = 0; i < totalFiles; i++) {
+           var file = document.getElementById("imageUploadForm").files[i];
+           formData.append("imageUploadForm", file);
+         }
+        var FirstName = document.forms["registerForm"]["Business.BusinessOwner.FirstName"].value;
+        var LastName = document.forms["registerForm"]["Business.BusinessOwner.LastName"].value;
+        var BusinessName = document.forms["registerForm"]["Business.BusinessName"].value;
+        var TagLine = document.forms["registerForm"]["Business.TagLine"].value;
+        var Email = document.forms["registerForm"]["Business.BusinessOwner.Email"].value;
+        var MobileNumber = document.forms["registerForm"]["Business.BusinessOwner.MobileNumber"].value;
+        var WhatsAppNumber = document.forms["registerForm"]["Business.BusinessOwner.WhatsAppNumber"].value;
+        var AddressLine1 = document.forms["registerForm"]["Business.Address.AddressLine1"].value;
+        //var AddressLine2 = document.forms["registerForm"]["Address.AddressLine2"].value;
+        var Area = document.forms["registerForm"]["Business.Address.Area"].value;
+        var City = document.forms["registerForm"]["Business.Address.City"].value;
+        var PinCode = document.forms["registerForm"]["Business.Address.PinCode"].value;
+        var State = $('[name="state"]').val();
+
+        var Country = "India";
+        var Category = $('[id="Categories"]').val();
+        var About = document.forms["registerForm"]["Business.About"].value;
+        var Products = document.forms["registerForm"]["Business.Products"].value;
+        var mondayStartTime = document.getElementById("mondayStartTime").value;
+        var mondayEndTime = document.getElementById("mondayEndTime").value;
+        var mondayClose = document.getElementById("mondayClose").checked;
+
+        if (mondayClose == false) {
+            if (mondayStartTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter start time for Monday, if it's closed click on close");
+            }
+            if (mondayEndTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter end time for Monday, if it's closed click on close");
+            }
+        }
+        var tuesdayStartTime = document.getElementById("tuesdayStartTime").value;
+        var tuesdayEndTime = document.getElementById("tuesdayEndTime").value;
+        var tuesdayClose = document.getElementById("tuesdayClose").checked;
+        if (tuesdayClose == false) {
+            if (tuesdayStartTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter start time for Tuesday, if it's closed click on close");
+            }
+            if (tuesdayEndTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter end time for Tuesday, if it's closed click on close");
+            }
+        }
+
+        var wednesdayStartTime = document.getElementById("wednesdayStartTime").value;
+        var wednesdayEndTime = document.getElementById("wednesdayEndTime").value;
+        var wednesdayClose = document.getElementById("wednesdayClose").checked;
+        if (wednesdayClose == false) {
+            if (wednesdayStartTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter start time for Wednesday, if it's closed click on close");
+            }
+            if (wednesdayEndTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter end time for Wednesday, if it's closed click on close");
+            }
+        }
+
+        var thursdayStartTime = document.getElementById("thursdayStartTime").value;
+        var thursdayEndTime = document.getElementById("thursdayEndTime").value;
+        var thursdayClose = document.getElementById("thursdayClose").checked;
+        if (thursdayClose == false && validated == true) {
+            if (thursdayStartTime == "") {
+                validated = false;
+                alert("Please enter start time for Thursday, if it's closed click on close");
+            }
+            if (thursdayEndTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter end time for Thursday, if it's closed click on close");
+            }
+        }
+
+        var fridayStartTime = document.getElementById("fridayStartTime").value;
+        var fridayEndTime = document.getElementById("fridayEndTime").value;
+        var fridayClose = document.getElementById("fridayClose").checked;
+        if (fridayClose == false  && validated == true) {
+            if (fridayStartTime == "") {
+                validated = false;
+                alert("Please enter start time for Friday, if it's closed click on close");
+            }
+            if (fridayEndTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter end time for Friday, if it's closed click on close");
+            }
+        }
+
+        var saturdayStartTime = document.getElementById("saturdayStartTime").value;
+        var saturdayEndTime = document.getElementById("saturdayEndTime").value;
+        var saturdayClose = document.getElementById("saturdayClose").checked;
+        if (saturdayClose == false) {
+            if (saturdayStartTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter start time for Saturday, if it's closed click on close");
+            }
+            if (saturdayEndTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter end time for Saturday, if it's closed click on close");
+            }
+        }
+
+        var sundayStartTime = document.getElementById("sundayStartTime").value;
+        var sundayEndTime = document.getElementById("sundayEndTime").value;
+        var sundayClose = document.getElementById("sundayClose").checked;
+        if (sundayClose == false) {
+            if (sundayStartTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter start time for Sunday, if it's closed click on close");
+            }
+            if (sundayEndTime == "" && validated == true) {
+                validated = false;
+                alert("Please enter end time for Sunday, if it's closed click on close");
+            }
+        }
+
+        var WebsiteLink = document.forms["registerForm"]["Business.WebsiteLink"].value;
+        var UserName = document.forms["registerForm"]["Business.BusinessOwner.UserName"].value;
+        if (UserName != "" && validated == true) {
+            if (UserName.length >= 4) {
+                $.ajax({
+                url: "@Url.Action("GetAllUserNames","Home")",
+                type: "GET",
+                cache: false,
+                    success: function (data) {
+                        data.forEach(function (item) {
+                            console.log(item);
+                            if (item == UserName) {
+                                validated = false;
+                                alert("UserName already exists");
+                                  return false;
+                            }
+                    })
+                },
+                    error: function (response) {
+                     validated = false;
+                        alert("Error!")
+                          return false;
+                }
+            });
+
+            }else if (UserName.length <= 4){
+                validated = false;
+                alert("UserName must be more than 4 characters");
+                  return false;
+            }
+        }
+        var Password = document.forms["registerForm"]["Business.BusinessOwner.Password"].value;
+        var ConfirmPassword = document.forms["registerForm"]["ConfirmPassword"].value;
+        if (ConfirmPassword != Password && validated == true) {
+            validated = false;
+            document.forms["registerForm"]["ConfirmPassword"].value = "";
+            alert("Please re-enter Confirm Password. Both the password doesn't match.")
+              return false;
+        }
+
+        if (About == "" || AddressLine1 == "" || Area == "" || Category == "" || BusinessName == "" || City == ""
+            || FirstName == "" || LastName == "" || MobileNumber == "" || Password == "" || PinCode == "" || Products == "" || State == "" || TagLine == ""
+            || WhatsAppNumber == "") {
+            return false;
+        }
+
+        //if (validated == true) {
+        //    alert("OTP sent to your mobile number. Please enter and click on varify");
+        //    $('#OTP').disabled = false;
+        //    $('#EnterOTP').focus();
+        //}
+
+        //var Business = {
+        //    BusinessName : BusinessName,
+        //    TagLine : TagLine,
+        //    RegistrationNumber : null,
+        //    BusinessOwner: {
+        //        FirstName : FirstName,
+        //        LastName : LastName,
+        //        MobileNumber : MobileNumber,
+        //        WhatsAppNumber : WhatsAppNumber,
+        //        Email : Email,
+        //        UserName : UserName,
+        //        Password : Password,
+        //        Role : "User"
+        //    },
+        //    RegisteredOn : null,
+        //    TelephoneNumber : null,
+        //    Contacts : null,
+        //    Images : null,
+        //    Address: {
+        //        AddressLine1: AddressLine1,
+        //        AddressLine2: null,
+        //        Area : Area,
+        //        City : City,
+        //        PinCode : PinCode,
+        //        State : State,
+        //        Country : Country
+        //    },
+        //    Timings: {
+        //        Monday : {
+        //            StartTime : mondayStartTime,
+        //            EndTime : mondayEndTime,
+        //            Closed : mondayClose,
+        //        },
+        //        Tuesday : {
+        //            StartTime : tuesdayStartTime,
+        //            EndTime : tuesdayEndTime,
+        //            Closed : tuesdayClose
+        //        },
+        //        Wednesday : {
+        //            StartTime : wednesdayStartTime,
+        //            EndTime : wednesdayEndTime,
+        //            Closed : wednesdayClose
+        //        },
+        //        Thursday : {
+        //            StartTime : thursdayStartTime,
+        //            EndTime : thursdayEndTime,
+        //            Closed : thursdayClose
+        //        },
+        //        Friday : {
+        //            StartTime : fridayStartTime,
+        //            EndTime : fridayEndTime,
+        //            Closed :fridayClose,
+        //        },
+        //        Saturday : {
+        //            StartTime : saturdayStartTime,
+        //            EndTime : saturdayEndTime,
+        //            Closed : saturdayClose
+        //        },
+        //        Sunday : {
+        //            StartTime : sundayStartTime,
+        //            EndTime : sundayEndTime,
+        //            Closed : sundayClose
+        //        }
+        //    },
+        //    About : About,
+        //    Products : Products,
+        //    Category: {
+        //        CategoryName: Category
+        //    },
+        //    WebsiteLink : WebsiteLink,
+        //    Membership : 1,
+        //    Payment : null
+        //}
+
+        //var registerBusiness = {
+        //    Business: Business,
+        //    uploadImagesFormFile : formData
+        //    //SearchViewModel: {
+        //    //    selectedCategory: Category
+        //    //    }
+        //}
+
+        if (validated == true) {
+            document.forms["registerForm"]["Business.Address.State"].value = State;
+            document.forms["registerForm"]["Business.Category.CategoryName"].value = Category[0];
+            document.forms["registerForm"]["Business.Address.Country"].value = Country;
+            document.forms["registerForm"]["Business.Timings.Monday.StartTime"].value = mondayStartTime;
+            document.forms["registerForm"]["Business.Timings.Monday.EndTime"].value = mondayEndTime;
+            document.forms["registerForm"]["Business.Timings.Monday.Closed"].value = mondayClose;
+            document.forms["registerForm"]["Business.Timings.Tuesday.StartTime"].value = tuesdayStartTime;
+            document.forms["registerForm"]["Business.Timings.Tuesday.EndTime"].value = tuesdayEndTime;
+            document.forms["registerForm"]["Business.Timings.Tuesday.Closed"].value = tuesdayClose;
+            document.forms["registerForm"]["Business.Timings.Wednesday.StartTime"].value = wednesdayStartTime;
+            document.forms["registerForm"]["Business.Timings.Wednesday.EndTime"].value = wednesdayEndTime;
+            document.forms["registerForm"]["Business.Timings.Wednesday.Closed"].value = wednesdayClose;
+            document.forms["registerForm"]["Business.Timings.Thursday.StartTime"].value = thursdayStartTime;
+            document.forms["registerForm"]["Business.Timings.Thursday.EndTime"].value = thursdayEndTime;
+            document.forms["registerForm"]["Business.Timings.Thursday.Closed"].value = thursdayClose;
+            document.forms["registerForm"]["Business.Timings.Friday.StartTime"].value = fridayStartTime;
+            document.forms["registerForm"]["Business.Timings.Friday.EndTime"].value = fridayEndTime;
+            document.forms["registerForm"]["Business.Timings.Friday.Closed"].value = fridayClose;
+            document.forms["registerForm"]["Business.Timings.Saturday.StartTime"].value = saturdayStartTime;
+            document.forms["registerForm"]["Business.Timings.Saturday.EndTime"].value = saturdayEndTime;
+            document.forms["registerForm"]["Business.Timings.Saturday.Closed"].value = saturdayClose;
+            document.forms["registerForm"]["Business.Timings.Sunday.StartTime"].value = sundayStartTime;
+            document.forms["registerForm"]["Business.Timings.Sunday.EndTime"].value = sundayEndTime;
+            document.forms["registerForm"]["Business.Timings.Sunday.Closed"].value = sundayClose;
+
+            var otp = Math.floor(1000 + Math.random() * 9000);
+
+            $.ajax({
+                url: "https://2factor.in/API/V1/27a4b12d-f59b-11ea-9fa5-0200cd936042/SMS/"+MobileNumber+"/"+otp+"/TXTSAA",
+                type: "POST",
+                success: function (response) {
+                    if (response.Status == "Success") {
+                       localStorage.setItem("OTP", otp);
+                        alert("OTP Sent to the given number.Please enter it.");
+                        $('#hover_bkgr_fricc').show();
+                        $('#inputOTP').focus(); 
+                       return false;
+                    } else {
+                        // DoSomethingElse()
+                       alert("Unable to send OTP.Please check the number you have provided.");
+                       return false;
+                    }
+                  
+                },
+                error: function (response) {
+                    alert("Error!")
+                }
+            });
+
+                
+             return false;
+            //document.getElementById('registerForm').submit();
+
+            @*$.ajax({
+                url: "@Url.Action("RegisterFormFilled","ManageBusiness")",
+                dataType: 'json',
+                data: registerBusiness,
+                type: "POST",
+                cache: false,
+                success: function (response) {
+                   if (response.success) {
+                        alert(response.responseText);
+                    } else {
+                        // DoSomethingElse()
+                        alert(response.responseText);
+                    }
+                    //window.location.reload();
+                    //want to return data as not boolean but string here
+                },
+                error: function (response) {
+                    alert("Error!")
+                }
+            });*@
+        } else {
+            return false;
+        }
+    }
+
+    //function VarifyAndSubmit() {
+    //    var otp = $("#EnteredOTP").val();
+    //    alert(otp);
+    //    if (otp == 1234) {
+
+    //    } else {
+    //        alert("OTP you have entered is incorrect. Please click on resend")
+    //    }
+    //}
+</script>

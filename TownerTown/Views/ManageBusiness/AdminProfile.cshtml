@@ -1,0 +1,157 @@
+﻿
+@model IEnumerable<TownerTown.Entities.Business>
+
+<div class="row" style="margin: 0px;">
+    <div class="col-sm-12" style="background-color: #7B82C7;height:167px;padding: 0px;">
+        <div class="col-sm-12" style=" margin-bottom: 10px;margin: 30px; margin-left: -14px;padding-left: 0px;">
+            <h3 style="text-align: center;height: 30px"> DASHBOARD </h3>
+        </div>
+        <div class="row col-sm-12" style="margin-bottom: 24px;">
+            <div class="col-sm-4" style="text-align:center"><button type="button" onclick="AllCustomers()" class="btn btn-success">All Customer </button> </div>
+            <div class="col-sm-4" style="text-align:center"> <button type="button" onclick="topRatedCustomers()" class="btn btn-info">Top-Rated Customers</button> </div>
+            <div class="col-sm-4" style="text-align:center"><button type="button" onclick="blockedCustomers()" class="btn btn-warning">Blocked Customers</button> </div>
+        </div>
+        <div class="col-sm-12" style="margin: 0px;padding: 0px;margin-top:40px; background-color: white;">
+            <div id='businessList'></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+
+    function openForm(id) {
+        localStorage.setItem("userID", id);
+        document.getElementById('myForm').style.display = 'block';
+    }
+
+    function onclose() {
+        window.location.reload();
+    }
+
+    function AllCustomers() {
+        window.location.reload();
+    }
+
+    function BlockUser() {
+        var blockReason = document.forms["blockForm"]["blockReason"].value;
+
+        $.ajax({
+            url: "/ManageBusiness/BlockUser",
+            dataType: 'json',
+            data: {
+                blockReason: blockReason,
+                userID: localStorage.getItem("userID")
+            },
+            type: "POST",
+            cache: false,
+            success: function (response) {
+                if (response.success) {
+                } else {
+                    // DoSomethingElse()
+                }
+                window.location.reload();
+                //want to return data as not boolean but string here
+            },
+            error: function (a, b, c) {
+                alert("Error")
+            }
+        });
+    }
+    function UnBlockUser(id) {
+
+        $.ajax({
+            url: "/ManageBusiness/UnBlockUser",
+            dataType: 'json',
+            data: {
+                userID: id
+            },
+            type: "POST",
+            cache: false,
+            success: function (response) {
+                if (response.success) {
+                } else {
+                    // DoSomethingElse()
+                }
+                window.location.reload();
+                //want to return data as not boolean but string here
+            },
+            error: function (a, b, c) {
+                alert("Error")
+            }
+        });
+    }
+</script>
+<script>
+    $.ajax({
+        url: "/ManageBusiness/GetCustomersByType",
+        dataType: 'json',
+        data: {
+            type: "ALL"
+        },
+        type: "POST",
+        cache: false,
+        success: function (data) {
+            $('#businessList').html(data);
+        },
+        error: function (e) {
+            console.log(e.responseText);
+            $('#businessList').html(e.responseText);
+        }
+    });
+
+    function premiumCustomers() {
+        $.ajax({
+            url: "/ManageBusiness/GetCustomersByType",
+            dataType: 'json',
+            data: {
+                type: "PREMIUM"
+            },
+            type: "POST",
+            cache: false,
+            success: function (data) {
+                $('#businessList').html(data);
+            },
+            error: function (e) {
+                console.log(e.responseText);
+                $('#businessList').html(e.responseText);
+            }
+        });
+    }
+    function topRatedCustomers() {
+        $.ajax({
+            url: "/ManageBusiness/GetCustomersByType",
+            dataType: 'json',
+            data: {
+                type: "TOPRATED"
+            },
+            type: "POST",
+            cache: false,
+            success: function (data) {
+                $('#businessList').html(data);
+            },
+            error: function (e) {
+                console.log(e.responseText);
+                $('#businessList').html(e.responseText);
+            }
+        });
+    }
+    function blockedCustomers() {
+        $.ajax({
+            url: "/ManageBusiness/GetCustomersByType",
+            dataType: 'json',
+            data: {
+                type: "BLOCKED"
+            },
+            type: "POST",
+            cache: false,
+            success: function (data) {
+                $('#businessList').html(data);
+            },
+            error: function (e) {
+                console.log(e.responseText);
+                $('#businessList').html(e.responseText);
+            }
+        });
+    }
+
+</script>

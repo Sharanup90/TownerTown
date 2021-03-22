@@ -1,0 +1,596 @@
+﻿@model TownerTown.Web.Models.BusinessViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+
+
+
+
+    .categoryList {
+        margin-top: 10px;
+    }
+
+    body {
+        padding: 20px;
+        font-family: 'Open Sans', sans-serif;
+        background-color: #f7f7f7;
+    }
+
+    .lib-panel {
+        margin-bottom: 20Px;
+        padding-left: 0px;
+    }
+
+        .lib-panel img {
+            width: 100%;
+            background-color: transparent;
+        }
+
+        .lib-panel .row,
+        .lib-panel .col-md-6 {
+            padding: 0;
+            background-color: #FFFFFF;
+        }
+
+
+        .lib-panel .lib-row {
+            padding: 0 20px 0 20px;
+        }
+
+            .lib-panel .lib-row.lib-header {
+                background-color: #FFFFFF;
+                font-size: 20px;
+                padding: 10px 20px 0 20px;
+            }
+
+                .lib-panel .lib-row.lib-header .lib-header-seperator {
+                    height: 2px;
+                    width: 26px;
+                    background-color: #d9d9d9;
+                    margin: 7px 0 7px 0;
+                }
+
+            .lib-panel .lib-row.lib-desc {
+                position: relative;
+                /*height: 100%;*/
+                display: block;
+                font-size: 13px;
+            }
+
+                .lib-panel .lib-row.lib-desc .col {
+                    padding-left: 0px;
+                }
+
+                .lib-panel .lib-row.lib-desc a {
+                    position: absolute;
+                    width: 100%;
+                    bottom: 10px;
+                    left: 20px;
+                }
+
+    .row-margin-bottom {
+        margin-bottom: 20px;
+    }
+
+    .box-shadow {
+        -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.10);
+        box-shadow: 0 0 10px 0 rgba(0,0,0,.10);
+    }
+
+    .no-padding {
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    .first_block {
+        height: 200px;
+        color: white;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .text-block {
+        position: absolute;
+        bottom: 100px;
+        right: 20px;
+        color: white;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+</style>
+<script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#listSearch").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myList li").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+<div class="Index">
+    <div class="container-fluid" style="background-image: url(/lib/images/ShopImages/img_nature_wide.jpg)">
+
+        <div class="row">
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-8">
+
+                <div class="col-sm-12" style="height:50px; text-align:center">
+                </div>
+                <div class="col-sm-12">
+                    <form name="searchForm" asp-controller="ManageBusiness" asp-action="LandingPageReload" method="GET">
+                        <div class="row">
+                            <div class="col-sm-4" style="padding:0px">
+                                @Html.HiddenFor(Model => Model.SearchViewModel.ID)
+                                @Html.DropDownListFor(Model => Model.SearchViewModel.selectedCity, new SelectList(Model.SearchViewModel.Cities, "CityID", "CityName"), new { Id = "Location" })
+                            </div>
+                            <div class="col-sm-6" style="padding:0px">
+                                @Html.ListBoxFor(Model => Model.SearchViewModel.selectedCategories, new MultiSelectList(Model.SearchViewModel.Categories, "CategoryName", "CategoryName"), new { Id = "Categories", multiple = "multiple" })
+                                @Html.HiddenFor(Model => Model.SearchViewModel.Categories)
+                                @Html.HiddenFor(Model => Model.SearchViewModel.Cities)
+                            </div>
+                            <div class="col-sm-2" style="padding:0px">
+                                <input type="submit" name="Submit">
+                            </div>
+
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="col-sm-12" style="height: 100px">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row listview">
+        <div class="categoryList col-sm-3" style="display:block">
+            <ul class="list-group" id="myList" style="padding-left: 2px; padding-bottom: 5px;">
+                <li class="list-group-item">
+                    @Html.DropDownList("selectCategory", new SelectList(Model.SearchViewModel.Categories, "CategoryName", "CategoryName"), new { Id = "Categories2" })
+                </li>
+                <li class="list-group-item"><button id="button" onclick="searchForCategory('Furniture');" class="btn-link" style="color:black; width:100%">Furniture</button></li>
+                <li class="list-group-item"><button id="button" onclick="searchForCategory('Restaurants');" class="btn-link" style="color:black; width:100%">Restaurants</button></li>
+                <li class="list-group-item"><button id="button" onclick="searchForCategory('Groceries');" class="btn-link" style="color:black; width:100%">Groceries</button></li>
+                <li class="list-group-item"><button id="button" onclick="searchForCategory('Hotels');" class="btn-link" style="color:black; width:100%">Hotels</button></li>
+                <li class="list-group-item"><button id="button" onclick="searchForCategory('Medicals');" class="btn-link" style="color:black; width:100%">Medicals</button></li>
+                <li class="list-group-item"><button id="button" onclick="searchForCategory('Clinics');" class="btn-link" style="color:black; width:100%">Clinics</button></li>
+                <li class="list-group-item"><button id="button" onclick="searchForCategory('Electrical');" class="btn-link" style="color:black; width:100%">Electrical</button></li>
+                <li class="list-group-item"><button id="button" onclick="searchForCategory('Electronics');" class="btn-link" style="color:black; width:100%">Electronics</button></li>
+                <li class="list-group-item"><button id="button" onclick="searchForCategory('Malls');" class="btn-link" style="color:black; width:100%">Malls</button></li>
+                <li class="list-group-item"><button id="button" onclick="searchForCategory('GiftCentre');" class="btn-link" style="color:black; width:100%">Gift Centres</button></li>
+            </ul>
+        </div>
+        @if (ViewBag.Message != null)
+        {
+            <h5>@ViewBag.Message</h5>
+        }
+        else
+        {
+            <div class="col-sm-9 listview" style="padding-left:0px">
+                @foreach (var item in Model.Businesses)
+                {
+                    <div class="col-sm-12 listview" style="">
+                        <div class="col-md-12 no-padding lib-item" data-category="view">
+                            <div class="lib-panel">
+                                <div class="row box-shadow">
+                                    <div class="col-md-3" style="padding-left: 0px; padding-right: 0px;">
+                                        @if (item.Images.Count != 0)
+                                        {
+                                            <img src="@Url.Content(item.Images[0].Path)" style="height:130px" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/lib/images/Logos/Defaultshop.jpg" style="height:130px" />
+                                        }
+                                    </div>
+                                    <div class="col-md-9" style="padding-left: 0px;margin-left: 0px;">
+                                        <div class="lib-row lib-header">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-sm-10" style=" margin-left: 0px;padding-left: 0px; font-size: 18px;">
+                                                        @Html.ActionLink(item.BusinessName, "ViewBusiness", new { id = item.ID })
+                                                    </div>
+                                                    <div class="col-sm-2" id="ratingscss" style="text-align:right; PADDING: 0PX;">
+                                                        @*<h6 style="text-align: right;">ratings: @item.OverallRating</h6>*@
+                                                        @if (@item.OverallRating == 0)
+                                                        {
+                                                            <span style="font-size:10px" class="fa fa-star "></span>
+                                                            <span style="font-size:10px" class="fa fa-star "></span>
+                                                            <span style="font-size:10px" class="fa fa-star "></span>
+                                                            <span style="font-size:10px" class="fa fa-star "></span>
+                                                            <span style="font-size:10px" class="fa fa-star"></span>
+                                                        }
+                                                        @if (@item.OverallRating == 1)
+                                                        {
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                            <span style="font-size:10px" class="fa fa-star"></span>
+                                                            <span style="font-size:10px" class="fa fa-star"></span>
+                                                            <span style="font-size:10px" class="fa fa-star"></span>
+                                                            <span style="font-size:10px" class="fa fa-star"></span>
+                                                        }
+                                                        @if (@item.OverallRating == 2)
+                                                        {
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                            <span style="font-size:10px" class="fa fa-star"></span>
+                                                            <span style="font-size:10px" class="fa fa-star"></span>
+                                                            <span style="font-size:10px" class="fa fa-star"></span>
+                                                        }
+                                                        @if (@item.OverallRating == 3)
+                                                        {
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                            <span style="font-size:10px" class="fa fa-star"></span>
+                                                            <span style="font-size:10px" class="fa fa-star"></span>
+                                                        }
+                                                        @if (@item.OverallRating == 4)
+                                                        {
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                            <span style="font-size:10px" class="fa fa-star"></span>
+                                                        }
+                                                        @if (@item.OverallRating == 5)
+                                                        {
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-sm-10" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
+                                                        <div class="lib-header-seperator"></div>
+                                                    </div>
+                                                    <div class="col-sm-2" style="font-size: 13px;padding: 0px;text-align: right;">Open</div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="lib-row lib-desc" style="padding-right:0px">
+                                            <div class="col">@item.Address.AddressLine1</div>
+
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-sm-9" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
+                                                        <div class="col">@item.Address.AddressLine2</div>
+                                                        @item.Address.Area, @item.Address.City, @item.Address.State
+                                                    </div>
+                                                    <div class="col-sm-3" style="margin-top:10px; text-align:right">
+                                                        <div class="row">
+
+                                                            <div class="col" style="width:40px; height:40px"><img onclick="(@("window.open('"+"tel:"+item.BusinessOwner.MobileNumber+"')"))" @*onclick="window.open('tel:900300400');"*@ style="width:40px; height:40px" src="/lib/images/Logos/call.jpg"></div>
+                                                            <div class="col" style="width:40px; height:40px; "><a style="padding-left: 10px;position: relative;    width: 100%;    bottom: 0px;   left: 0px;   text-align: right;" href="//api.whatsapp.com/send?phone=919844789937&text=WHATEVER_LINK_OR_TEXT_YOU_WANT_TO_SEND"><img style="width:32px; margin: 4px 7px 0px 7px;" src="/lib/images/Logos/whtasapp.jpg"></a></div>
+                                                            <div class="col" style="width:40px; height:40px"><img onclick="showInMap(@item.Address.Lattitude, @item.Address.Longitude)" style="width:40px; height:40px" src="~/lib/images/Logos/location.jpg" /></div>
+                                                        </div>
+                                                    </div>
+                                                    @*<div class="col-sm-3" style="margin-top:10px">
+                                                    <div class="row">
+
+                                                        <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/call.jpg" /></div>
+                                                        <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/whtasapp.jpg" /></div>
+                                                        <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/location.jpg" /></div>
+                                                    </div>
+                                                </div>*@
+                                                </div>
+                                            </div>
+                                            <div class="col"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="col-sm-12 listview" style="">
+                    <div class="col-md-12 no-padding lib-item" data-category="view">
+                        <div class="lib-panel">
+                            <div class="row box-shadow">
+                                <div class="col-md-3" style="padding-left: 0px; padding-right: 0px;">
+                                    <img class="lib-img-show" src="http://lorempixel.com/850/850/?random=123" style="height:130px">
+                                </div>
+                                <div class="col-md-9" style="padding-left: 0px;margin-left: 0px;">
+                                    <div class="lib-row lib-header">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-sm-11" style=" margin-left: 0px;padding-left: 0px; font-size: 18px;">
+                                                    Shree Veerabhadreshwara Kirana Store
+                                                </div>
+                                                <div class="col-sm-1" style="color:orangered; padding-left: 0px;">***</div>
+                                            </div>
+                                        </div>
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-sm-11" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
+                                                    <div class="lib-header-seperator"></div>
+                                                </div>
+                                                <div class="col-sm-1" style="font-size: 13px;">Open</div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="lib-row lib-desc" style="padding-right:0px">
+                                        <div class="col">#204, Gauli galli , infront of siddharud math</div>
+
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-sm-9" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
+                                                    <div class="col">Hale hibballi</div>
+                                                    560029, Hubblli, Karnataka
+                                                </div>
+                                                <div class="col-sm-3" style="margin-top:10px">
+                                                    <div class="row">
+
+                                                        <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/call.jpg" /></div>
+                                                        <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/whtasapp.jpg" /></div>
+                                                        <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/location.jpg" /></div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+
+
+@*<div class="col-sm-12 first_block">
+
+        <div class="text-block">
+            <div class="input-group mb-3">
+
+                <div class="input-group-append">
+                    <img src="~/lib/images/Logos/location.jpg" style="height:30px" />
+                </div>
+
+                <form asp-controller="ManageBusiness" asp-action="LandingPageReload" method="post">
+                    @Html.HiddenFor(Model => Model.SearchViewModel.ID);
+                    @Html.DropDownListFor(Model => Model.SearchViewModel.selectedCity, new SelectList(Model.SearchViewModel.Cities, "CityID", "CityName"), new { Id = "Location" })
+                    @Html.ListBoxFor(Model => Model.SearchViewModel.selectedCategories, new MultiSelectList(Model.SearchViewModel.Categories, "CategoryName", "CategoryName"), new { Id = "Categories", multiple = "multiple" })
+
+                    <input type="submit" name="Submit">
+
+                </form>
+            </div>
+        </div>
+    </div>*@
+
+@*<div class="col-sm-12 first_block">
+
+        <div class="text-block">
+            <div class="input-group mb-3">
+
+                <div class="input-group-append">
+                    <img src="~/lib/images/Logos/location.jpg" style="height:30px" />
+                </div>
+
+                <form asp-controller="ManageBusiness" asp-action="LandingPage" method="post">
+                    <input placeholder="Choose location" list="locations" name="Location" id="location" style="width:200px;height:30px">
+                    <datalist id="locations">
+                        <option value="Hubballi"></option>
+                        <option value="Badami"></option>
+                        <option value="Nalatavad"></option>
+                        <option value="Bengaluru"></option>
+                        <option value="Kalaburagi"></option>
+                    </datalist>
+
+                    <input type="text" id="category" id="SearchInput" placeholder="Search" aria-label="Text input with dropdown button" style="width:350px;height:30px">
+
+                    <input type="submit" name="Submit">
+
+                </form>
+            </div>
+        </div>
+    </div>*@
+
+@*<div style="padding-left: 0px; padding-right: 0px; height:180px;width:100%;padding-left: 0px;margin-left: 0px; margin-top:37px; background-image: url(/lib/images/ShopImages/mainImg.jpg)"></div>
+    <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px; height:180px;width:100%;padding-left: 0px;margin-left: 0px; margin-top:37px; background-image: url(/lib/images/ShopImages/mainImg.jpg)">
+*@
+@*<div class="row" style="margin-top:50px">
+        <div class="col-sm-4">
+          .
+        </div>
+        <div class="col-sm-8">
+            <form action="/action_page.php" method="get">
+                <div class="input-group mb-3">
+
+                    <div class="input-group-append">
+                        <img style="height:40px" src="~/lib/images/Logos/location.jpg" />
+                    </div>
+                    <select id="ddlFruits" name="FruitId" asp-items="(IEnumerable<SelectListItem>)@ViewData["items"]">
+                        <option value="0">Please select</option>
+                    </select>
+                    @Html.DropDownList("selct city", (IEnumerable<SelectListItem>)ViewData["items"], "Please select", new { id = "ddlCity" })
+                    <input placeholder="Choose location" list="(IEnumerable<SelectListItem>)@ViewData["items"]" name="browser" id="browser">
+                    <datalist id="browsers">
+                        <option value="Edge"></option>
+                        <option value="Firefox"></option>
+                        <option value="Chrome"></option>
+                        <option value="Opera"></option>
+                        <option value="Safari"></option>
+                    </datalist>
+
+                    <input type="text" placeholder="Search" aria-label="Text input with dropdown button" style=" width: 300px;">
+
+                </div>
+
+            </form>
+        </div>
+    </div>*@
+
+
+
+
+@*<img style="height:180px;width:100%;padding-left: 0px;margin-left: 0px;" src="/lib/images/ShopImages/mainImg.jpg">*@
+
+
+
+
+
+
+
+@*<script>
+
+        function searchInput() {
+            var location = document.getElementById("location").value;
+            var searchString = document.getElementById("searchInput").value;
+
+            $.ajax({
+                url: "@Url.Action("GetAllReleventBusiness","ManageBusiness")",
+                dataType: 'json',
+                data: {
+                    location: location,
+                    category: searchString
+                },
+                type: "GET",
+                cache: false,
+                success: function (data) {
+                    alert(data);
+                    //window.location.reload();
+                    //want to return data as not boolean but string here
+                },
+                error: function (a, b, c) {
+                    alert("Error")
+                }
+            });
+        }
+    </script>*@
+
+
+<link href="~/lib/Chosen/chosen.min.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/chosen.jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    #ratingscss .checked {
+        color: orange;
+    }
+
+    .chosen-container {
+        width: 100% !important;
+    }
+
+    .chosen-container-single .chosen-single {
+        height: 30px;
+        border-radius: 3px;
+        border: 1px solid #CCCCCC;
+    }
+
+        .chosen-container-single .chosen-single span {
+            padding-top: 2px;
+        }
+
+        .chosen-container-single .chosen-single div b {
+            margin-top: 2px;
+        }
+
+    .chosen-container-active .chosen-single,
+    .chosen-container-active.chosen-with-drop .chosen-single {
+        border-color: #ccc;
+        border-color: rgba(82, 168, 236, .8);
+        outline: 0;
+        outline: thin dotted \9;
+        -moz-box-shadow: 0 0 8px rgba(82, 168, 236, .6);
+        box-shadow: 0 0 8px rgba(82, 168, 236, .6)
+    }
+
+    .box {
+        margin: 20px auto;
+        width: 100%;
+        max-width: 150px;
+        height: 40px;
+        text-align: center;
+    }
+
+        .box .container-1 input {
+            width: 100%;
+        }
+
+    #button:hover {
+        background-color: blueviolet
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        if ($('.chosen-container').length > 0) {
+          $('.chosen-container').on('touchstart', function(e){
+            e.stopPropagation(); e.preventDefault();
+            // Trigger the mousedown event.
+            $(this).trigger('mousedown');
+          });
+        }
+        (function ($) {
+            $("#Location").chosen(
+                //{ allow_single_deselect: true }
+            );
+            $("#Categories").chosen(
+                { max_selected_options: 1 }
+            );
+             $("#Categories2").chosen(
+                { max_selected_options: 1 }
+            );
+            $('#Categories2').on('change', function () {
+                var category = $('[id="Categories2"]').val();
+                var location = document.forms["searchForm"]["SearchViewModel.selectedCity"].value;
+                window.location.href = "GetAllReleventBusiness?location=" + location + "&category=" + category;
+                @*location.href = '@Url.Action("GetAllReleventBusiness", "ManageBusiness") ? location=' + location + '&category=' + category;*@                @*$.ajax({
+                    url: "@Url.Action("GetAllReleventBusiness","ManageBusiness")",
+                    dataType: 'json',
+                    data: {
+                        location: location,
+                        category: category
+                    },
+                    type: "GET",
+                    cache: false,
+                    success: function (data) {
+                        alert(data);
+                        //window.location.reload();
+                        //want to return data as not boolean but string here
+                    },
+                    error: function (a, b, c) {
+                        alert("Error")
+                    }
+                });*@
+            });
+        })(jQuery);
+    });
+</script>
+<script>
+    function searchForCategory(category) {
+        var location = document.forms["searchForm"]["SearchViewModel.selectedCity"].value;
+        window.location.href = "GetAllReleventBusiness?location=" + location + "&category=" + category;
+    }
+    function showInMap(longitude, lattitude) {
+        var location = longitude + lattitude;
+        var url = " http://maps.google.com/maps?z=12&t=m&q=loc:" + location;
+
+        window.open(url, '_blank');
+
+    }
+</script>
+
