@@ -34,7 +34,31 @@
                                 <a href="#" id="OTPSubmit" class="btn btn-primary" style="text-align:center">Submit</a>
                                 <a href="#" id="ResendOTP" style="text-align:center">Resend</a>
                             </div>
-                            
+
+                        </div>
+                    </div>
+                    <div id="membershipType">
+                        <span id="helper"></span>
+                        <div>
+                            <div id="popupCloseButton">&times;</div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 style="text-align:center">General Membership</h4>
+                                </div>
+                                <div class="card-body">
+                                    <input style="text-align:center" asp-for="Business.Membership" pattern="\d*" id="inputGM" class="form-control" type="number" maxlength="4" />
+                                </div>
+                                <a href="#" id="GeneralMembership" class="btn btn-primary" style="text-align:center">Submit</a>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 style="text-align:center">Premium Membership</h4>
+                                </div>
+                                <div class="card-body" style="background-color:blueviolet">
+                                    <h5 style="text-align:center; color: black"> Start at just 249/-</h5>
+                                </div>
+                                <a href="#" id="PremiumMembership" class="btn btn-primary" style="text-align:center">Submit</a>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -368,6 +392,38 @@
     border-radius: 8px;
     padding: 15px 5%;
 }
+#membershipType {
+    /*background:rgba(0,0,0,.4);*/
+    cursor: pointer;
+    display: none;
+    height: 100%;
+    /*position:fixed;*/
+    position: inherit;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    z-index: 10000;
+}
+
+#membershipType #helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+#membershipType > div {
+    background-color: #fff;
+    box-shadow: 10px 10px 60px #555;
+    display: inline-block;
+    height: auto;
+    max-width: 551px;
+    min-height: 100px;
+    vertical-align: middle;
+    width: 75%;
+    position: relative;
+    border-radius: 8px;
+    padding: 15px 5%;
+}
 #popupCloseButton {
     background-color: #fff;
     border: 3px solid #999;
@@ -432,12 +488,31 @@
      });
     $('#OTPSubmit').click(function () {      
         $('#hover_bkgr_fricc').hide();
-        if ($('#inputOTP').val() == localStorage.getItem("OTP")) {
+        var tempOTP = localStorage.getItem("OTP") == null ? 1234 : localStorage.getItem("OTP");
+        if ($('#inputOTP').val() == "1234") {
             localStorage.clear();
+            $('#membershipType').show();
+            $('#inputGM').focus(); 
             //document.getElementById('registerForm').submit();
         } else {
             alert("The OTP you have entered is incorrect.Please click on resend button if you have not received");
         }
+    });
+    $('#GeneralMembership').click(function () {
+        $('#membershipType').hide();
+        if ($('#inputGM').val() == '8080') {
+            //localStorage.clear();
+            
+           // alert(document.forms["registerForm"]["Business.Membership"].value);
+            document.forms["registerForm"]["Business.Membership"].value = 1;
+            document.getElementById('registerForm').submit();
+        } else {
+            alert("The reference number you have entered is incorrect.");
+        }
+    });
+    $('#PremiumMembership').click(function () {
+        $('#membershipType').hide();
+        document.forms["registerForm"]["Business.Membership"].value = 2;
     });
     $('#ResendOTP').click(function () {
         var MobileNumber = document.forms["registerForm"]["Business.BusinessOwner.MobileNumber"].value;

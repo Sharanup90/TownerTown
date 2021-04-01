@@ -224,7 +224,15 @@ namespace TownerTown.Web.Controllers
                     if (business != null)
                     {
                         _session.SetInt32("UserID", business.BusinessOwner.ID);
-                        return View("Payments", orderModel);
+                        if(business.Membership == MembershipType.PREMIUM)
+                        {
+                            return View("Payments", orderModel);
+                        }
+                        else if(business.Membership == MembershipType.GENERAL)
+                        {
+                            return RedirectToAction("ViewProfile");
+                        }
+                        
                     }
 
                 }
