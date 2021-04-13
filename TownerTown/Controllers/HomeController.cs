@@ -12,6 +12,7 @@ using TownerTown.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using TownerTown.Helpers;
 
 namespace TownerTown.Web.Controllers
 {
@@ -56,6 +57,13 @@ namespace TownerTown.Web.Controllers
             categories = _businessService.GetAllCategories();
             searchViewModel.Categories = categories;
             ViewBag.DefaultLayout = true;
+            var userAgent = HttpContext.Request.Headers["User-Agent"];
+
+            if (DeviceIdentofication.IsMobileDevice(userAgent))
+            {
+                _session.SetInt32("IsMobileDevice", 1);
+                // Return mobile view
+            }
             return View(searchViewModel);
         }
 

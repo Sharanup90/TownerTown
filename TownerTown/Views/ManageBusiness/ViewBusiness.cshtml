@@ -1,395 +1,793 @@
 ﻿@model TownerTown.Entities.Business
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "ViewBusiness";
 }
-<div id="viewBusiness" class="ViewBusiness" style="background-color:white">
+@if (@Context.Session.GetString("IsMobileDevice") == null)
+{
+    <div id="viewBusiness" class="ViewBusiness" style="background-color:white">
 
-    <div style="background-color:white">
-        <div>
-            @if (Model.Images.Count != 0)
-            {
-                <img src="@Url.Content(Model.Images[0].Path)" style="width:100%; height:250px" />
-            }
-            else
-            {
-                <img src="~/lib/images/ShopImages/mainImg.jpg" style="width:100%; height:250px" />
-            }
-        </div>
-        <div class="viewBusinessNavbar fixed navbar navbar nav">
-            <a class="active" href="#Overview">Overview</a>
-            <a href="#About">About</a>
-            <a href="#Products">Products</a>
-            <a href="#Reviews">Reviews</a>
-            <a href="#Photos">Photos</a>
-        </div>
-
-        <div class="col-sm-12">
-            <h3 id="Overview" style="color:blue; font-size:24px">Overview</h3>
-            <h4 style="color:brown">@Model.BusinessName </h4>
-            <p>@Model.TagLine </p>
-            <div class="col-sm-12" style="margin:0px;padding:0px">
-                <hr />
+        <div style="background-color:white">
+            <div>
+                @if (Model.Images.Count != 0)
+                {
+                    <img src="@Url.Content(Model.Images[0].Path)" style="width:100%; height:250px" />
+                }
+                else
+                {
+                    <img src="~/lib/images/ShopImages/mainImg.jpg" style="width:100%; height:250px" />
+                }
+            </div>
+            <div class="viewBusinessNavbar fixed navbar navbar-dark navbar nav" style="    line-height: 30px; background-color: brown; font-family: arial;">
+                <a class="active" href="#Overview" style="color:peachpuff; font-size: medium;">Overview</a>
+                <a href="#About" style="color:peachpuff; font-size: medium;">About</a>
+                <a href="#Products" style="color:peachpuff; font-size: medium;">Products</a>
+                <a href="#Reviews" style="color:peachpuff; font-size: medium;">Reviews</a>
+                <a href="#Photos" style="color:peachpuff; font-size: medium;">Photos</a>
             </div>
 
-            <div style="padding-right:0px">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-2" style="padding: 0px;">
-                            Address:
-                        </div>
-                        <div class="col-sm-10">
-                            <h6>@Model.Address.AddressLine1</h6>
-                            <h6>@Model.Address.AddressLine2</h6>
-                            <h6> @Model.Address.Area, @Model.Address.City, @Model.Address.Country, @Model.Address.PinCode</h6>
-                            <div style="/* width:40px; */height:40px;">View On Map<img style="width:40px;height: 35px;margin-top: -7px;" src="/lib/images/Logos/location.jpg"></div>
+            <div class="col-sm-12">
+                <h3 id="Overview" style="color:blue; font-size:24px">Overview</h3>
+                <h4 style="color:brown">@Model.BusinessName </h4>
+                <p>@Model.TagLine </p>
+                <div class="col-sm-12" style="margin:0px;padding:0px">
+                    <hr />
+                </div>
 
-                        </div>
-                        <div class="col-sm-12" style="margin:0px;padding:0px">
-                            <hr />
-                        </div>
-
-                        <div class="col-sm-2 mobileTelephoneDetails1" style="margin-top: 10px;padding: 0px;">
-                            Mobile Number:
-                        </div>
-                        <div class="col-sm-2 mobileTelephoneDetails2" style="margin-top: 10px;">
-                            <h6>@Model.BusinessOwner.MobileNumber</h6>
-                        </div>
-                        <div class="col-sm-1 mobileTelephoneDetails1" style="">
-                            <div style="width:40px; height:40px"><img onclick="(@("window.open('"+"tel:"+Model.BusinessOwner.MobileNumber+"')"))" @*onclick="window.open('tel:900300400');"*@ style="width:40px; height:40px" src="/lib/images/Logos/call.jpg"></div>
-                        </div>
-                        <div class="col-sm-1 mobileTelephoneDetails1" style="margin-top: 10px;">
-                            |
-                        </div>
-                        <div class="col-sm-2 mobileTelephoneDetails1" style="margin-top: 10px;">
-                            WhatsApp Number:
-                        </div>
-                        <div class="col-sm-2 mobileTelephoneDetails1" style=" margin-top: 10px;">
-                            <h6>@Model.BusinessOwner.WhatsAppNumber</h6>
-                        </div>
-                        <div class="col-sm-2 mobileTelephoneDetails1">
-                            <div style="width:40px; height:40px; "><a href="//api.whatsapp.com/send?phone=919844789937&text=WHATEVER_LINK_OR_TEXT_YOU_WANT_TO_SEND"><img style="width:32px; margin: 4px 7px 0px 7px;" src="/lib/images/Logos/whtasapp.jpg"></a></div>
-                        </div>
-                        <div class="col-sm-12 mobileTelephoneDetails1" style="margin:0px;padding:0px">
-                            <hr />
-                        </div>
-
-                        <div class="mobileTelephoneDetails2" style="display:none">
-                            <div style="margin-top: 10px;padding: 0px;">
-                                Mobile Number:
-                                <h6>@Model.BusinessOwner.MobileNumber</h6>
-                                <div style="width:40px; height:40px"><img onclick="(@("window.open('"+"tel:"+Model.BusinessOwner.MobileNumber+"')"))" @*onclick="window.open('tel:900300400');"*@ style="width:40px; height:40px" src="/lib/images/Logos/call.jpg"></div>
+                <div style="padding-right:0px">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-2" style="padding: 0px;">
+                                Address:
                             </div>
+                            <div class="col-sm-10">
+                                <h6>@Model.Address.AddressLine1</h6>
+                                <h6>@Model.Address.AddressLine2</h6>
+                                <h6> @Model.Address.Area, @Model.Address.City, @Model.Address.Country, @Model.Address.PinCode</h6>
+                                <div style="/* width:40px; */height:40px;">View On Map<img style="width:40px;height: 35px;margin-top: -7px;" src="/lib/images/Logos/location.jpg"></div>
 
-                            <div style="margin-top: 10px;padding: 0px;">
-                                WhatsApp Number:
-                                <h6>@Model.BusinessOwner.WhatsAppNumber</h6>
-                                <div style="width:40px; height:40px; "><a href="//api.whatsapp.com/send?phone=919844789937&text=WHATEVER_LINK_OR_TEXT_YOU_WANT_TO_SEND"><img style="width:32px; margin: 4px 7px 0px 7px;" src="/lib/images/Logos/whtasapp.jpg"></a></div>
                             </div>
-
                             <div class="col-sm-12" style="margin:0px;padding:0px">
                                 <hr />
                             </div>
-                        </div>
 
-                        <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
-                            <h6>Timings:</h6>
-                        </div>
-                        <div class="col-sm-2" style=" margin-top: 10px;">
-                            <h6>Monday</h6>
-                        </div>
-                        @if (Model.Timings.Monday.Closed != true)
-                        {
-                            <div class="col-sm-8" style=" margin-top: 10px;">
-                                @Model.Timings.Monday.StartTime To  @Model.Timings.Monday.EndTime
+                            <div class="col-sm-2 mobileTelephoneDetails1" style="margin-top: 10px;padding: 0px;">
+                                Mobile Number:
                             </div>
-                        }
-                        else
-                        {
-                            <div class="col-sm-8">
-                                Closed
+                            <div class="col-sm-2 mobileTelephoneDetails2" style="margin-top: 10px;">
+                                <h6>@Model.BusinessOwner.MobileNumber</h6>
                             </div>
-                        }
-
-                        <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
-
-                        </div>
-                        <div class="col-sm-2" style=" margin-top: 10px;">
-                            <h6>Tuesday</h6>
-                        </div>
-                        @if (Model.Timings.Tuesday.Closed != true)
-                        {
-                            <div class="col-sm-8" style=" margin-top: 10px;">
-                                @Model.Timings.Tuesday.StartTime To  @Model.Timings.Tuesday.EndTime
+                            <div class="col-sm-1 mobileTelephoneDetails1" style="">
+                                <div style="width:40px; height:40px"><img onclick="(@("window.open('"+"tel:"+Model.BusinessOwner.MobileNumber+"')"))" @*onclick="window.open('tel:900300400');"*@ style="width:40px; height:40px" src="/lib/images/Logos/call.jpg"></div>
                             </div>
-                        }
-                        else
-                        {
-                            <div class="col-sm-8">
-                                Closed
+                            <div class="col-sm-1 mobileTelephoneDetails1" style="margin-top: 10px;">
+                                |
                             </div>
-                        }
-                        <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
-                        </div>
-                        <div class="col-sm-2" style=" margin-top: 10px;">
-                            <h6>Wednesday</h6>
-                        </div>
-                        @if (Model.Timings.Wednesday.Closed != true)
-                        {
-                            <div class="col-sm-8" style=" margin-top: 10px;">
-                                @Model.Timings.Wednesday.StartTime To  @Model.Timings.Wednesday.EndTime
+                            <div class="col-sm-2 mobileTelephoneDetails1" style="margin-top: 10px;">
+                                WhatsApp Number:
                             </div>
-                        }
-                        else
-                        {
-                            <div class="col-sm-8">
-                                Closed
+                            <div class="col-sm-2 mobileTelephoneDetails1" style=" margin-top: 10px;">
+                                <h6>@Model.BusinessOwner.WhatsAppNumber</h6>
                             </div>
-                        }
-                        <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
-                        </div>
-                        <div class="col-sm-2" style=" margin-top: 10px;">
-                            <h6>Thursday</h6>
-                        </div>
-                        @if (Model.Timings.Thursday.Closed != true)
-                        {
-                            <div class="col-sm-8" style=" margin-top: 10px;">
-                                @Model.Timings.Thursday.StartTime To  @Model.Timings.Thursday.EndTime
+                            <div class="col-sm-2 mobileTelephoneDetails1">
+                                <div style="width:40px; height:40px; "><a href="//api.whatsapp.com/send?phone=919844789937&text=WHATEVER_LINK_OR_TEXT_YOU_WANT_TO_SEND"><img style="width:32px; margin: 4px 7px 0px 7px;" src="/lib/images/Logos/whtasapp.jpg"></a></div>
                             </div>
-                        }
-                        else
-                        {
-                            <div class="col-sm-8">
-                                Closed
-                            </div>
-                        }
-                        <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
-                        </div>
-                        <div class="col-sm-2" style=" margin-top: 10px;">
-                            <h6>Friday</h6>
-                        </div>
-                        @if (Model.Timings.Friday.Closed != true)
-                        {
-                            <div class="col-sm-8" style=" margin-top: 10px;">
-                                @Model.Timings.Friday.StartTime To  @Model.Timings.Friday.EndTime
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-sm-8">
-                                Closed
-                            </div>
-                        }
-                        <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
-                        </div>
-                        <div class="col-sm-2" style=" margin-top: 10px;">
-                            <h6>Saturday</h6>
-                        </div>
-                        @if (Model.Timings.Saturday.Closed != true)
-                        {
-                            <div class="col-sm-8" style=" margin-top: 10px;">
-                                @Model.Timings.Saturday.StartTime To  @Model.Timings.Saturday.EndTime
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-sm-8">
-                                Closed
-                            </div>
-                        }
-                        <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
-
-                        </div>
-                        <div class="col-sm-2" style=" margin-top: 10px;">
-                            <h6>Sunday</h6>
-                        </div>
-                        @if (Model.Timings.Sunday.Closed != true)
-                        {
-                            <div class="col-sm-8" style=" margin-top: 10px;">
-                                @Model.Timings.Sunday.StartTime To  @Model.Timings.Monday.EndTime
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-sm-8">
-                                Closed
-                            </div>
-                        }
-
-                    </div>
-
-                </div>
-            </div>
-            <div class="col"></div>
-        </div>
-
-        <div class="col-sm-12">
-            <hr style="border-top: 1px solid #000;">
-        </div>
-        <div id="About" class="col-sm-12" style="background-color:white">
-            <h3 style="color:blue; font-size:24px">About</h3>
-            <p> @Model.About <p>
-        </div>
-        <div class="col-sm-12">
-            <hr style="border-top: 1px solid #000;">
-        </div>
-        <div id="Products" class="col-sm-12">
-            <h3 style="color:blue; font-size:24px; background-color:white">Products</h3>
-            <p>@Model.Products<p>
-        </div>
-        <div class="col-sm-12">
-            <hr style="border-top: 1px solid #000;">
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <div id="Reviews" class="col-sm-8">
-                    <h3 style="color:blue; font-size:24px; background-color:white">Reviews</h3>
-                </div>
-
-                <div class="col-sm-4">
-                    <h3><button type="button" id="writeReview" onclick="WriteReview()" class="btn btn-primary">Write Review</button></h3>
-                </div>
-            </div>
-        </div>
-        <div class="container" id="myForm" style="/* text-align: center; */top: 47%;right: 150px;bottom: 0;left: 300px;height: 480px;margin-bottom:10px">
-            <form name="reviewForm" class="form-container" style=" width: 100%; height: 100%;background-color:teal" onsubmit="@("AddReview('"+Model.BusinessOwner.ID+"')")">
-                <div style="position:absolute; top:0; right:0;"><button onclick="onclose()" class="btn-link">close</button></div>
-                <br />
-                <label style="color:white">Name </label>
-                <input class="form-control" required type="text" id="reviewverName" />
-                <label style="color:white">MobileNumber </label>
-                <input class="form-control" required type="number" id="reviewverMobileNumber" />
-                <label style="color:white">Rating </label>
-                <select id="ddlViewBy">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5" selected="selected">5</option>
-                </select>
-                @*<input class="form-control" required type="number" id="reviewverRatings" />*@
-                <label style="color:white">Review </label>
-                <textarea id="reviewText" rows="3" class="form-control" spellcheck="false" style=" margin-bottom: 20px;"></textarea>
-                <button type="submit" class="btn  btn-sm" style=" text-align: center; width: auto;height: 50px;">
-                    Submit
-                </button>
-            </form>
-        </div>
-        @if (Model.Reviews.Count != 0)
-        {
-            <div style="height:600px;overflow:scroll">
-                @foreach (var review in Model.Reviews)
-                {
-                    <div class="col-sm-12" style="background-color:white">
-
-                        <div class="card">
-                            <div class="card-header" id="ratingscss">
-                                @if (review.Rating == 1)
-                                {
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                }
-                                @if (review.Rating == 2)
-                                {
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                }
-                                @if (review.Rating == 3)
-                                {
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                }
-                                @if (review.Rating == 4)
-                                {
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                }
-                                @if (review.Rating == 5)
-                                {
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                }
-                            </div>
-                            <div class="card-body">
-                                <blockquote class="blockquote mb-0">
-                                    <p>@review.ReviewMessage .</p>
-                                    <footer class="blockquote-footer">On <cite title="Source Title"><a>@review.ReviewdOn.Date</a></cite> by <cite title="Source Title"><a>@review.Name</a></cite></footer>
-                                </blockquote>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        }
-        else
-        {
-            <div class="col-sm-12">
-                <h5>No reviews Yet. <button class="btn-link" onclick="WriteReview()">Write Review</button></h5>
-            </div>
-
-        }
-
-        <div class="col-sm-12">
-            <hr style="border-top: 1px solid #000;">
-        </div>
-        <div id="Photos" class="col-sm-12">
-            <h3 style="color:blue; font-size:24px; background-color:white">Photos</h3>
-        </div>
-        <div class="col-sm-12">
-        </div>
-        @if (@Model.Images.Count != 0)
-        {
-            <div class="col-sm-12">
-                <div class="row">
-                    @{
-                        var count = 0;
-
-                        @foreach (var imageFile in Model.Images)
-                        {
-                            <div class="col-sm-4">
-                                <img src="@Url.Content(imageFile.Path)" style="width:100%; height:150px" />
+                            <div class="col-sm-12 mobileTelephoneDetails1" style="margin:0px;padding:0px">
+                                <hr />
                             </div>
 
-                            if (count == 2)
+                            <div class="mobileTelephoneDetails2" style="display:none">
+                                <div style="margin-top: 10px;padding: 0px;">
+                                    Mobile Number:
+                                    <h6>@Model.BusinessOwner.MobileNumber</h6>
+                                    <div style="width:40px; height:40px"><img onclick="(@("window.open('"+"tel:"+Model.BusinessOwner.MobileNumber+"')"))" @*onclick="window.open('tel:900300400');"*@ style="width:40px; height:40px" src="/lib/images/Logos/call.jpg"></div>
+                                </div>
+
+                                <div style="margin-top: 10px;padding: 0px;">
+                                    WhatsApp Number:
+                                    <h6>@Model.BusinessOwner.WhatsAppNumber</h6>
+                                    <div style="width:40px; height:40px; "><a href="//api.whatsapp.com/send?phone=919844789937&text=WHATEVER_LINK_OR_TEXT_YOU_WANT_TO_SEND"><img style="width:32px; margin: 4px 7px 0px 7px;" src="/lib/images/Logos/whtasapp.jpg"></a></div>
+                                </div>
+
+                                <div class="col-sm-12" style="margin:0px;padding:0px">
+                                    <hr />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                                <h6>Timings:</h6>
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6>Monday</h6>
+                            </div>
+                            @if (Model.Timings.Monday.Closed != true)
                             {
-                                count = 0;
-                                <div class="col-sm-12" style="height:10px">
+                                <div class="col-sm-8" style=" margin-top: 10px;">
+                                    @Model.Timings.Monday.StartTime To  @Model.Timings.Monday.EndTime
                                 </div>
                             }
-                            count++;
-                        }
-                    }
+                            else
+                            {
+                                <div class="col-sm-8">
+                                    Closed
+                                </div>
+                            }
+
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6>Tuesday</h6>
+                            </div>
+                            @if (Model.Timings.Tuesday.Closed != true)
+                            {
+                                <div class="col-sm-8" style=" margin-top: 10px;">
+                                    @Model.Timings.Tuesday.StartTime To  @Model.Timings.Tuesday.EndTime
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-8">
+                                    Closed
+                                </div>
+                            }
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6>Wednesday</h6>
+                            </div>
+                            @if (Model.Timings.Wednesday.Closed != true)
+                            {
+                                <div class="col-sm-8" style=" margin-top: 10px;">
+                                    @Model.Timings.Wednesday.StartTime To  @Model.Timings.Wednesday.EndTime
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-8">
+                                    Closed
+                                </div>
+                            }
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6>Thursday</h6>
+                            </div>
+                            @if (Model.Timings.Thursday.Closed != true)
+                            {
+                                <div class="col-sm-8" style=" margin-top: 10px;">
+                                    @Model.Timings.Thursday.StartTime To  @Model.Timings.Thursday.EndTime
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-8">
+                                    Closed
+                                </div>
+                            }
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6>Friday</h6>
+                            </div>
+                            @if (Model.Timings.Friday.Closed != true)
+                            {
+                                <div class="col-sm-8" style=" margin-top: 10px;">
+                                    @Model.Timings.Friday.StartTime To  @Model.Timings.Friday.EndTime
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-8">
+                                    Closed
+                                </div>
+                            }
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6>Saturday</h6>
+                            </div>
+                            @if (Model.Timings.Saturday.Closed != true)
+                            {
+                                <div class="col-sm-8" style=" margin-top: 10px;">
+                                    @Model.Timings.Saturday.StartTime To  @Model.Timings.Saturday.EndTime
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-8">
+                                    Closed
+                                </div>
+                            }
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6>Sunday</h6>
+                            </div>
+                            @if (Model.Timings.Sunday.Closed != true)
+                            {
+                                <div class="col-sm-8" style=" margin-top: 10px;">
+                                    @Model.Timings.Sunday.StartTime To  @Model.Timings.Monday.EndTime
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-8">
+                                    Closed
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+
+            <div class="col-sm-12">
+                <hr style="border-top: 1px solid #000;">
+            </div>
+            <div id="About" class="col-sm-12" style="background-color:white">
+                <h3 style="color:blue; font-size:24px">About</h3>
+                <p> @Model.About <p>
+            </div>
+            <div class="col-sm-12">
+                <hr style="border-top: 1px solid #000;">
+            </div>
+            <div id="Products" class="col-sm-12">
+                <h3 style="color:blue; font-size:24px; background-color:white">Products</h3>
+                <p>@Model.Products<p>
+            </div>
+            <div class="col-sm-12">
+                <hr style="border-top: 1px solid #000;">
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="Reviews" class="col-sm-8">
+                        <h3 style="color:blue; font-size:24px; background-color:white">Reviews</h3>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <h3><button type="button" id="writeReview" onclick="WriteReview()" class="btn btn-primary">Write Review</button></h3>
+                    </div>
                 </div>
             </div>
-        }
-        else
-        {
+            <div class="container" id="myForm" style="/* text-align: center; */top: 47%;right: 150px;bottom: 0;left: 300px;height: 480px;margin-bottom:10px">
+                <form name="reviewForm" class="form-container" style=" width: 100%; height: 100%;background-color:teal" onsubmit="@("AddReview('"+Model.BusinessOwner.ID+"')")">
+                    <div style="position:absolute; top:0; right:0;"><button onclick="onclose()" class="btn-link">close</button></div>
+                    <br />
+                    <label style="color:white">Name </label>
+                    <input class="form-control" required type="text" id="reviewverName" />
+                    <label style="color:white">MobileNumber </label>
+                    <input class="form-control" required type="number" id="reviewverMobileNumber" />
+                    <label style="color:white">Rating </label>
+                    <select id="ddlViewBy">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5" selected="selected">5</option>
+                    </select>
+                    @*<input class="form-control" required type="number" id="reviewverRatings" />*@
+                    <label style="color:white">Review </label>
+                    <textarea id="reviewText" rows="3" class="form-control" spellcheck="false" style=" margin-bottom: 20px;"></textarea>
+                    <button type="submit" class="btn  btn-sm" style=" text-align: center; width: auto;height: 50px;">
+                        Submit
+                    </button>
+                </form>
+            </div>
+            @if (Model.Reviews.Count != 0)
+            {
+                <div style="height:600px;overflow:scroll">
+                    @foreach (var review in Model.Reviews)
+                    {
+                        <div class="col-sm-12" style="background-color:white">
+
+                            <div class="card">
+                                <div class="card-header" id="ratingscss">
+                                    @if (review.Rating == 1)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    }
+                                    @if (review.Rating == 2)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    }
+                                    @if (review.Rating == 3)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    }
+                                    @if (review.Rating == 4)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                    }
+                                    @if (review.Rating == 5)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                    }
+                                </div>
+                                <div class="card-body">
+                                    <blockquote class="blockquote mb-0">
+                                        <p>@review.ReviewMessage .</p>
+                                        <footer class="blockquote-footer">On <cite title="Source Title"><a>@review.ReviewdOn.Date</a></cite> by <cite title="Source Title"><a>@review.Name</a></cite></footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-12">
+                    <h5>No reviews Yet. <button class="btn-link" onclick="WriteReview()">Write Review</button></h5>
+                </div>
+
+            }
+
             <div class="col-sm-12">
-                <h6>No photos Uploaded</h6>
+                <hr style="border-top: 1px solid #000;">
+            </div>
+            <div id="Photos" class="col-sm-12">
+                <h3 style="color:blue; font-size:24px; background-color:white">Photos</h3>
+            </div>
+            <div class="col-sm-12">
+            </div>
+            @if (@Model.Images.Count != 0)
+            {
+                <div class="col-sm-12">
+                    <div class="row">
+                        @{
+                            var count = 0;
+
+                            @foreach (var imageFile in Model.Images)
+                            {
+                                <div class="col-sm-4">
+                                    <img src="@Url.Content(imageFile.Path)" style="width:100%; height:150px" />
+                                </div>
+
+                                if (count == 2)
+                                {
+                                    count = 0;
+                                    <div class="col-sm-12" style="height:10px">
+                                    </div>
+                                }
+                                count++;
+                            }
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-12">
+                    <h6>No photos Uploaded</h6>
+                </div>
+
+            }
+
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <hr style="border-top: 1px solid #000;">
+    </div>
+
+}
+else
+{
+    <div id="viewBusiness" class="ViewBusiness" style="background-color:white">
+
+        <div style="background-color:white">
+            <div>
+                @if (Model.Images.Count != 0)
+                {
+                    <img src="@Url.Content(Model.Images[0].Path)" style="width:100%; height:250px" />
+                }
+                else
+                {
+                    <img src="~/lib/images/ShopImages/mainImg.jpg" style="width:100%; height:250px" />
+                }
+            </div>
+            <div class="viewBusinessNavbar fixed navbar navbar-dark navbar nav" style="    line-height: 30px; background-color: brown; font-family: arial;">
+                <a class="active" href="#Overview" style="color:peachpuff; font-size: medium;">Overview</a>
+                <a href="#About" style="color:peachpuff; font-size: medium;">About</a>
+                <a href="#Products" style="color:peachpuff; font-size: medium;">Products</a>
+                <a href="#Reviews" style="color:peachpuff; font-size: medium;">Reviews</a>
+                <a href="#Photos" style="color:peachpuff; font-size: medium;">Photos</a>
             </div>
 
-        }
+            <div class="col-sm-12">
+                <h3 id="Overview" style="color:blue; font-size:24px">Overview</h3>
+                <h4 style="color:brown">@Model.BusinessName </h4>
+                <p>@Model.TagLine </p>
+                <div class="col-sm-12" style="margin:0px;padding:0px">
+                    <hr />
+                </div>
 
+                <div style="padding-right:0px">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-2" style="padding: 0px;">
+                                Address:
+                            </div>
+                            <div class="col-sm-10">
+                                <h6>@Model.Address.AddressLine1</h6>
+                                <h6>@Model.Address.AddressLine2</h6>
+                                <h6> @Model.Address.Area, @Model.Address.City, @Model.Address.Country, @Model.Address.PinCode</h6>
+                                <div style="/* width:40px; */height:40px;">View On Map<img style="width:40px;height: 35px;margin-top: -7px;" src="/lib/images/Logos/location.jpg"></div>
+
+                            </div>
+                            <div class="col-sm-12" style="margin:0px;padding:0px">
+                                <hr />
+                            </div>
+
+                            <div class="col-sm-2 mobileTelephoneDetails1" style="margin-top: 10px;padding: 0px;">
+                                Contact Details:
+                            </div>
+                            <div class="col" style="font-size: larger;margin-top: 3px;">
+                                Mobile Number:
+                            </div>
+                            <div class="row mobileTelephoneDetails1" style="/* margin-top: 10px; */">
+                                <div class="col" style="margin-top: 5px;">
+                                    <h6 style="font-size: large;">
+                                        @Model.BusinessOwner.MobileNumber
+                                    </h6>
+                                </div><div style="/* width:40px; *//* height:40px; */" class="col"><img onclick="(@("window.open('"+"tel:"+Model.BusinessOwner.MobileNumber+"')"))" @*onclick="window.open('tel:900300400');"*@ style="width:40px; height:40px" src="/lib/images/Logos/call.jpg"></div>
+                            </div>
+                            <div class="cl" style="font-size: larger;margin-top: 3px;margin-left: 15px;margin-right:7px">
+                                WhatsApp Number:
+                            </div>
+                            <div class="row " style="/* margin-top: 10px; */">
+                                <div class="col" style="margin-top: 5px;margin-left: 48px;padding-left: 0px;margin-right: 5px;">
+                                    <h6 style="font-size: large;">
+                                        8080602010
+                                    </h6>
+                                </div><div style="/* width:40px; *//* height:40px; */" class="col"><a href="//api.whatsapp.com/send?phone=919844789937&amp;text=WHATEVER_LINK_OR_TEXT_YOU_WANT_TO_SEND"><img style="width:32px;" src="/lib/images/Logos/whtasapp.jpg"></a></div>
+                            </div>
+                            <div class="col-sm-12 mobileTelephoneDetails1" style="margin:0px;padding:0px">
+                                <hr />
+                            </div>
+
+                            <div class="mobileTelephoneDetails2" style="display:none">
+                                <div style="margin-top: 10px;padding: 0px;">
+                                    Mobile Number:
+                                    <h6>@Model.BusinessOwner.MobileNumber</h6>
+                                    <div style="width:40px; height:40px"><img onclick="(@("window.open('"+"tel:"+Model.BusinessOwner.MobileNumber+"')"))" @*onclick="window.open('tel:900300400');"*@ style="width:40px; height:40px" src="/lib/images/Logos/call.jpg"></div>
+                                </div>
+
+                                <div style="margin-top: 10px;padding: 0px;">
+                                    WhatsApp Number:
+                                    <h6>@Model.BusinessOwner.WhatsAppNumber</h6>
+                                    <div style="width:40px; height:40px; "><a href="//api.whatsapp.com/send?phone=919844789937&text=WHATEVER_LINK_OR_TEXT_YOU_WANT_TO_SEND"><img style="width:32px; margin: 4px 7px 0px 7px;" src="/lib/images/Logos/whtasapp.jpg"></a></div>
+                                </div>
+
+                                <div class="col-sm-12" style="margin:0px;padding:0px">
+                                    <hr />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                                <h6>Timings:</h6>
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6>Monday</h6>
+                            </div>
+                            @if (Model.Timings.Monday.Closed != true)
+                            {
+                                <div class="col-sm-8" style=" margin-top: 10px;">
+                                    @Model.Timings.Monday.StartTime To  @Model.Timings.Monday.EndTime
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-8">
+                                    Closed
+                                </div>
+                            }
+
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6>Tuesday</h6>
+                            </div>
+                            @if (Model.Timings.Tuesday.Closed != true)
+                            {
+                                <div class="col-sm-8" style=" margin-top: 10px;">
+                                    @Model.Timings.Tuesday.StartTime To  @Model.Timings.Tuesday.EndTime
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-8">
+                                    Closed
+                                </div>
+                            }
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6>Wednesday</h6>
+                            </div>
+                            @if (Model.Timings.Wednesday.Closed != true)
+                            {
+                                <div class="col-sm-8" style=" margin-top: 10px;">
+                                    @Model.Timings.Wednesday.StartTime To  @Model.Timings.Wednesday.EndTime
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-8">
+                                    Closed
+                                </div>
+                            }
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6>Thursday</h6>
+                            </div>
+                            @if (Model.Timings.Thursday.Closed != true)
+                            {
+                                <div class="col-sm-8" style=" margin-top: 10px;">
+                                    @Model.Timings.Thursday.StartTime To  @Model.Timings.Thursday.EndTime
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-8">
+                                    Closed
+                                </div>
+                            }
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6>Friday</h6>
+                            </div>
+                            @if (Model.Timings.Friday.Closed != true)
+                            {
+                                <div class="col-sm-8" style=" margin-top: 10px;">
+                                    @Model.Timings.Friday.StartTime To  @Model.Timings.Friday.EndTime
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-8">
+                                    Closed
+                                </div>
+                            }
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6>Saturday</h6>
+                            </div>
+                            @if (Model.Timings.Saturday.Closed != true)
+                            {
+                                <div class="col-sm-8" style=" margin-top: 10px;">
+                                    @Model.Timings.Saturday.StartTime To  @Model.Timings.Saturday.EndTime
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-8">
+                                    Closed
+                                </div>
+                            }
+                            <div class="col-sm-2" style=" margin-top: 10px;padding:0px">
+
+                            </div>
+                            <div class="col-sm-2" style=" margin-top: 10px;">
+                                <h6>Sunday</h6>
+                            </div>
+                            @if (Model.Timings.Sunday.Closed != true)
+                            {
+                                <div class="col-sm-8" style=" margin-top: 10px;">
+                                    @Model.Timings.Sunday.StartTime To  @Model.Timings.Monday.EndTime
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-8">
+                                    Closed
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+
+            <div class="col-sm-12">
+                <hr style="border-top: 1px solid #000;">
+            </div>
+            <div id="About" class="col-sm-12" style="background-color:white">
+                <h3 style="color:blue; font-size:24px">About</h3>
+                <p> @Model.About <p>
+            </div>
+            <div class="col-sm-12">
+                <hr style="border-top: 1px solid #000;">
+            </div>
+            <div id="Products" class="col-sm-12">
+                <h3 style="color:blue; font-size:24px; background-color:white">Products</h3>
+                <p>@Model.Products<p>
+            </div>
+            <div class="col-sm-12">
+                <hr style="border-top: 1px solid #000;">
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="Reviews" class="col-sm-8">
+                        <h3 style="color:blue; font-size:24px; background-color:white">Reviews</h3>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <h3><button type="button" id="writeReview" onclick="WriteReview()" class="btn btn-primary">Write Review</button></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="container" id="myForm" style="/* text-align: center; */top: 47%;right: 150px;bottom: 0;left: 300px;height: 480px;margin-bottom:10px; display:none">
+                <form name="reviewForm" class="form-container" style=" width: 100%; height: 100%;background-color:teal" onsubmit="@("AddReview('"+Model.BusinessOwner.ID+"')")">
+                    <div style="position:absolute; top:0; right:0;"><button onclick="onclose()" class="btn-link">close</button></div>
+                    <br />
+                    <label style="color:white">Name </label>
+                    <input class="form-control" required type="text" id="reviewverName" />
+                    <label style="color:white">MobileNumber </label>
+                    <input class="form-control" required type="number" id="reviewverMobileNumber" />
+                    <label style="color:white">Rating </label>
+                    <select id="ddlViewBy">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5" selected="selected">5</option>
+                    </select>
+                    @*<input class="form-control" required type="number" id="reviewverRatings" />*@
+                    <label style="color:white">Review </label>
+                    <textarea id="reviewText" rows="3" class="form-control" spellcheck="false" style=" margin-bottom: 20px;"></textarea>
+                    <button type="submit" class="btn  btn-sm" style=" text-align: center; width: auto;height: 50px;">
+                        Submit
+                    </button>
+                </form>
+            </div>
+            @if (Model.Reviews.Count != 0)
+            {
+                <div style="height:600px;overflow:scroll">
+                    @foreach (var review in Model.Reviews)
+                    {
+                        <div class="col-sm-12" style="background-color:white">
+
+                            <div class="card">
+                                <div class="card-header" id="ratingscss">
+                                    @if (review.Rating == 1)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    }
+                                    @if (review.Rating == 2)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    }
+                                    @if (review.Rating == 3)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    }
+                                    @if (review.Rating == 4)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                    }
+                                    @if (review.Rating == 5)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                    }
+                                </div>
+                                <div class="card-body">
+                                    <blockquote class="blockquote mb-0">
+                                        <p>@review.ReviewMessage .</p>
+                                        <footer class="blockquote-footer">On <cite title="Source Title"><a>@review.ReviewdOn.Date</a></cite> by <cite title="Source Title"><a>@review.Name</a></cite></footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-12">
+                    <h5>No reviews Yet. <button class="btn-link" onclick="WriteReview()">Write Review</button></h5>
+                </div>
+
+            }
+
+            <div class="col-sm-12">
+                <hr style="border-top: 1px solid #000;">
+            </div>
+            <div id="Photos" class="col-sm-12">
+                <h3 style="color:blue; font-size:24px; background-color:white">Photos</h3>
+            </div>
+            <div class="col-sm-12">
+            </div>
+            @if (@Model.Images.Count != 0)
+            {
+                <div class="col-sm-12">
+                    <div class="row">
+                        @{
+                            var count = 0;
+
+                            @foreach (var imageFile in Model.Images)
+                            {
+                                <div class="col-sm-4">
+                                    <img src="@Url.Content(imageFile.Path)" style="width:100%; height:150px" />
+                                </div>
+
+                                if (count == 2)
+                                {
+                                    count = 0;
+                                    <div class="col-sm-12" style="height:10px">
+                                    </div>
+                                }
+                                count++;
+                            }
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-12">
+                    <h6>No photos Uploaded</h6>
+                </div>
+
+            }
+
+        </div>
     </div>
-</div>
-<div class="col-sm-12">
-    <hr style="border-top: 1px solid #000;">
-</div>
+    <div class="col-sm-12">
+        <hr style="border-top: 1px solid #000;">
+    </div>
+
+}
 
 
 <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -547,12 +945,12 @@
 
 <style>
     /** {
-        box-sizing: border-box
-    }
+            box-sizing: border-box
+        }
 
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-    }*/
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }*/
 
     .viewBusinessNavbar .navbar {
         background-color: rgb(140, 140, 140);
@@ -585,27 +983,27 @@
             }
 
     /*media screen and (max-width: 500px) {
-        .navbar a
+            .navbar a
 
-    {
-        float: none;
-        display: block;
-        width: 100%;
-        text-align: left;
-    }
+        {
+            float: none;
+            display: block;
+            width: 100%;
+            text-align: left;
+        }
 
-    }
+        }
 
-    h3 {
-        margin-top: 10px;
-        margin-bottom: 20px;
-    }
+        h3 {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
 
-    hr {
-        margin-top: 10px;
-        margin-bottom: 10px;
-        border: 0;
-        border-top: 1px solid #eee;
-    }*/
+        hr {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 0;
+            border-top: 1px solid #eee;
+        }*/
 </style>
 

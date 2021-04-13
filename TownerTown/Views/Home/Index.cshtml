@@ -1,6 +1,7 @@
 ﻿
 
 @model TownerTown.Web.Models.SearchViewModel
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Home Page";
@@ -11,37 +12,75 @@
             <div class="col-sm-2">
 
             </div>
-            <div class="col-sm-8">
+            @if (@Context.Session.GetString("IsMobileDevice") == null)
+            {
+                <div class="col-sm-8">
 
-                <div class="col-sm-12" style="height:350px; text-align:center">
-                    <img src="~/lib/images/Logos/Defaultshop.jpg" style="margin-top: 100px;width:400px; height:200px" />
-                    <h2>Search India</h2>
+                    <div class="col-sm-12" style="height:300px; text-align:center">
+                        <img src="~/lib/images/Logos/1617522881108.jpg" style="margin-top: 30px;width:400px; height:200px" />
+                        <h2>Search India</h2>
+                    </div>
+                    <div class="col-sm-12">
+                        <form asp-controller="ManageBusiness" asp-action="LandingPage" method="post" style="width: 80%; margin-left: 135px;">
+
+                            <div class="row">
+                                <div class="col-sm-4" style="padding:0px">
+                                    @Html.HiddenFor(Model => Model.ID)
+                                    @Html.DropDownListFor(Model => Model.selectedCity, new SelectList(Model.Cities, "CityID", "CityName"), "Select City", new { Id = "Location" })
+                                </div>
+                                <div class="col-sm-6" style="padding:0px">
+                                    @Html.ListBoxFor(Model => Model.selectedCategories, new SelectList(Model.Categories, "CategoryName", "CategoryName"), new { Id = "Categories", multiple = "multiple" })
+                                    @Html.HiddenFor(Model => Model.Categories)
+                                    @Html.HiddenFor(Model => Model.Cities)
+                                </div>
+                                <div class="col-sm-2" style="padding:0px">
+                                    <input type="submit" name="Submit" value="Search" style="font-size:large">
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+
+                    <div class="col-sm-12">
+
+                    </div>
                 </div>
-                <div class="col-sm-12">
-                    <form asp-controller="ManageBusiness" asp-action="LandingPage" method="post">
-                        <div class="row">
-                            <div class="col-sm-4" style="padding:0px">
+            }
+            else
+            {
+                <div class="col-sm-8">
+
+                    <div class="col-sm-12" style="height:350px; text-align:center">
+                        <img src="~/lib/images/Logos/1617522881108.jpg" style="margin-top: 100px;width:300px; height:200px" />
+                        <h2>Search India</h2>
+                    </div>
+                    <div class="col-sm-12">
+                        <form asp-controller="ManageBusiness" asp-action="LandingPage" method="post">
+
+                            <div style="margin-bottom:10px">
                                 @Html.HiddenFor(Model => Model.ID)
                                 @Html.DropDownListFor(Model => Model.selectedCity, new SelectList(Model.Cities, "CityID", "CityName"), "Select City", new { Id = "Location" })
                             </div>
-                            <div class="col-sm-6" style="padding:0px">
+
+
+                            <div style="margin-bottom:10px">
                                 @Html.ListBoxFor(Model => Model.selectedCategories, new SelectList(Model.Categories, "CategoryName", "CategoryName"), new { Id = "Categories", multiple = "multiple" })
                                 @Html.HiddenFor(Model => Model.Categories)
                                 @Html.HiddenFor(Model => Model.Cities)
                             </div>
-                            <div class="col-sm-2" style="padding:0px">
-                                <input type="submit" name="Submit">
+                            <div>
+                                <input class="btn btn-primary" type="submit" name="Submit" value="Search" style="font-size:large">
                             </div>
 
-                        </div>
+                        </form>
+                    </div>
 
-                    </form>
+                    <div class="col-sm-12">
+
+                    </div>
                 </div>
-
-                <div class="col-sm-12">
-
-                </div>
-            </div>
+            }
             <div class="col-sm-2">
 
             </div>
@@ -59,12 +98,14 @@
 <style>
     .chosen-container {
         width: 100% !important;
+        font-size:large
     }
 
     .chosen-container-single .chosen-single {
         height: 30px;
         border-radius: 3px;
         border: 1px solid #CCCCCC;
+        font-size: large
     }
 
         .chosen-container-single .chosen-single span {
@@ -96,15 +137,18 @@
         .box .container-1 input {
             width: 100%;
         }
+    .chosen-container chosen-container-single{
+        margin-bottom:10px
+    }
 </style>
 <script>
     $(document).ready(function () {
         if ($('.chosen-container').length > 0) {
-          $('.chosen-container').on('touchstart', function(e){
-            e.stopPropagation(); e.preventDefault();
-            // Trigger the mousedown event.
-            $(this).trigger('mousedown');
-          });
+            $('.chosen-container').on('touchstart', function (e) {
+                e.stopPropagation(); e.preventDefault();
+                // Trigger the mousedown event.
+                $(this).trigger('mousedown');
+            });
         }
         (function ($) {
             $("#Location").chosen(

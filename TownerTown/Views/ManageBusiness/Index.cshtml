@@ -1,4 +1,5 @@
 ﻿@model TownerTown.Web.Models.BusinessViewModel
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Index";
@@ -112,7 +113,7 @@
     });
 </script>
 
-<div class="Index">
+<div class="Index">l 
     <div class="container-fluid" style="background-image: url(/lib/images/ShopImages/img_nature_wide.jpg)">
 
         <div class="row">
@@ -125,21 +126,38 @@
                 </div>
                 <div class="col-sm-12">
                     <form name="searchForm" asp-controller="ManageBusiness" asp-action="LandingPageReload" method="GET">
-                        <div class="row">
-                            <div class="col-sm-4" style="padding:0px">
+                        @if (@Context.Session.GetString("IsMobileDevice") != null)
+                        {
+                            <div style="margin-bottom:10px">
                                 @Html.HiddenFor(Model => Model.SearchViewModel.ID)
                                 @Html.DropDownListFor(Model => Model.SearchViewModel.selectedCity, new SelectList(Model.SearchViewModel.Cities, "CityID", "CityName"), new { Id = "Location" })
                             </div>
-                            <div class="col-sm-6" style="padding:0px">
+                            <div style="margin-bottom:10px">   
                                 @Html.ListBoxFor(Model => Model.SearchViewModel.selectedCategories, new MultiSelectList(Model.SearchViewModel.Categories, "CategoryName", "CategoryName"), new { Id = "Categories", multiple = "multiple" })
                                 @Html.HiddenFor(Model => Model.SearchViewModel.Categories)
                                 @Html.HiddenFor(Model => Model.SearchViewModel.Cities)
+                            </div>   
+                                
+                            <input class="btn btn-primary" type="submit" name="Submit" value="Search" style="font-size:large">
+                                                       
+                        }
+                        else
+                        {
+                            <div class="row">
+                                <div class="col-sm-4" style="padding:0px">
+                                    @Html.HiddenFor(Model => Model.SearchViewModel.ID)
+                                    @Html.DropDownListFor(Model => Model.SearchViewModel.selectedCity, new SelectList(Model.SearchViewModel.Cities, "CityID", "CityName"), new { Id = "Location" })
+                                </div>
+                                <div class="col-sm-6" style="padding:0px">
+                                    @Html.ListBoxFor(Model => Model.SearchViewModel.selectedCategories, new MultiSelectList(Model.SearchViewModel.Categories, "CategoryName", "CategoryName"), new { Id = "Categories", multiple = "multiple" })
+                                    @Html.HiddenFor(Model => Model.SearchViewModel.Categories)
+                                    @Html.HiddenFor(Model => Model.SearchViewModel.Cities)
+                                </div>
+                                <div class="col-sm-2" style="padding:0px">
+                                    <input type="submit" name="Submit" value="Search" style="font-size:large">
+                                </div>
                             </div>
-                            <div class="col-sm-2" style="padding:0px">
-                                <input type="submit" name="Submit">
-                            </div>
-
-                        </div>
+                        }
 
                     </form>
                 </div>
@@ -151,195 +169,145 @@
         </div>
     </div>
     <div class="row listview">
-        <div class="categoryList col-sm-3" style="display:block">
-            <ul class="list-group" id="myList" style="padding-left: 2px; padding-bottom: 5px;">
-                <li class="list-group-item">
-                    @Html.DropDownList("selectCategory", new SelectList(Model.SearchViewModel.Categories, "CategoryName", "CategoryName"), new { Id = "Categories2" })
-                </li>
-                <li class="list-group-item"><button id="button" onclick="searchForCategory('Furniture');" class="btn-link" style="color:black; width:100%">Furniture</button></li>
-                <li class="list-group-item"><button id="button" onclick="searchForCategory('Restaurants');" class="btn-link" style="color:black; width:100%">Restaurants</button></li>
-                <li class="list-group-item"><button id="button" onclick="searchForCategory('Groceries');" class="btn-link" style="color:black; width:100%">Groceries</button></li>
-                <li class="list-group-item"><button id="button" onclick="searchForCategory('Hotels');" class="btn-link" style="color:black; width:100%">Hotels</button></li>
-                <li class="list-group-item"><button id="button" onclick="searchForCategory('Medicals');" class="btn-link" style="color:black; width:100%">Medicals</button></li>
-                <li class="list-group-item"><button id="button" onclick="searchForCategory('Clinics');" class="btn-link" style="color:black; width:100%">Clinics</button></li>
-                <li class="list-group-item"><button id="button" onclick="searchForCategory('Electrical');" class="btn-link" style="color:black; width:100%">Electrical</button></li>
-                <li class="list-group-item"><button id="button" onclick="searchForCategory('Electronics');" class="btn-link" style="color:black; width:100%">Electronics</button></li>
-                <li class="list-group-item"><button id="button" onclick="searchForCategory('Malls');" class="btn-link" style="color:black; width:100%">Malls</button></li>
-                <li class="list-group-item"><button id="button" onclick="searchForCategory('GiftCentre');" class="btn-link" style="color:black; width:100%">Gift Centres</button></li>
-            </ul>
-        </div>
+        @if (@Context.Session.GetString("IsMobileDevice") == null)
+        {
+            <div class="categoryList col-sm-3" style="display:block">
+                <ul class="list-group" id="myList" style="padding-left: 2px; padding-bottom: 5px;">
+                    <li class="list-group-item">
+                        @Html.DropDownList("selectCategory", new SelectList(Model.SearchViewModel.Categories, "CategoryName", "CategoryName"), new { Id = "Categories2" })
+                    </li>
+                    <li class="list-group-item"><button id="button" onclick="searchForCategory('Furniture');" class="btn-link" style="color:black; width:100%">Furniture</button></li>
+                    <li class="list-group-item"><button id="button" onclick="searchForCategory('Restaurants');" class="btn-link" style="color:black; width:100%">Restaurants</button></li>
+                    <li class="list-group-item"><button id="button" onclick="searchForCategory('Groceries');" class="btn-link" style="color:black; width:100%">Groceries</button></li>
+                    <li class="list-group-item"><button id="button" onclick="searchForCategory('Hotels');" class="btn-link" style="color:black; width:100%">Hotels</button></li>
+                    <li class="list-group-item"><button id="button" onclick="searchForCategory('Medicals');" class="btn-link" style="color:black; width:100%">Medicals</button></li>
+                    <li class="list-group-item"><button id="button" onclick="searchForCategory('Clinics');" class="btn-link" style="color:black; width:100%">Clinics</button></li>
+                    <li class="list-group-item"><button id="button" onclick="searchForCategory('Electrical');" class="btn-link" style="color:black; width:100%">Electrical</button></li>
+                    <li class="list-group-item"><button id="button" onclick="searchForCategory('Electronics');" class="btn-link" style="color:black; width:100%">Electronics</button></li>
+                    <li class="list-group-item"><button id="button" onclick="searchForCategory('Malls');" class="btn-link" style="color:black; width:100%">Malls</button></li>
+                    <li class="list-group-item"><button id="button" onclick="searchForCategory('GiftCentre');" class="btn-link" style="color:black; width:100%">Gift Centres</button></li>
+                </ul>
+            </div>
+        }
+
         @if (ViewBag.Message != null)
         {
             <h5>@ViewBag.Message</h5>
         }
         else
         {
-            <div class="col-sm-9 listview" style="padding-left:0px">
-                @foreach (var item in Model.Businesses)
-                {
-                    <div class="col-sm-12 listview" style="">
-                        <div class="col-md-12 no-padding lib-item" data-category="view">
-                            <div class="lib-panel">
-                                <div class="row box-shadow">
-                                    <div class="col-md-3" style="padding-left: 0px; padding-right: 0px;">
-                                        @if (item.Images.Count != 0)
-                                        {
-                                            <img src="@Url.Content(item.Images[0].Path)" style="height:130px" />
-                                        }
-                                        else
-                                        {
-                                            <img src="~/lib/images/Logos/Defaultshop.jpg" style="height:130px" />
-                                        }
-                                    </div>
-                                    <div class="col-md-9" style="padding-left: 0px;margin-left: 0px;">
-                                        <div class="lib-row lib-header">
-                                            <div class="container">
-                                                <div class="row">
-                                                    <div class="col-sm-10" style=" margin-left: 0px;padding-left: 0px; font-size: 18px;">
-                                                        @Html.ActionLink(item.BusinessName, "ViewBusiness", new { id = item.ID })
-                                                    </div>
-                                                    <div class="col-sm-2" id="ratingscss" style="text-align:right; PADDING: 0PX;">
-                                                        @*<h6 style="text-align: right;">ratings: @item.OverallRating</h6>*@
-                                                        @if (@item.OverallRating == 0)
-                                                        {
-                                                            <span style="font-size:10px" class="fa fa-star "></span>
-                                                            <span style="font-size:10px" class="fa fa-star "></span>
-                                                            <span style="font-size:10px" class="fa fa-star "></span>
-                                                            <span style="font-size:10px" class="fa fa-star "></span>
-                                                            <span style="font-size:10px" class="fa fa-star"></span>
-                                                        }
-                                                        @if (@item.OverallRating == 1)
-                                                        {
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                            <span style="font-size:10px" class="fa fa-star"></span>
-                                                            <span style="font-size:10px" class="fa fa-star"></span>
-                                                            <span style="font-size:10px" class="fa fa-star"></span>
-                                                            <span style="font-size:10px" class="fa fa-star"></span>
-                                                        }
-                                                        @if (@item.OverallRating == 2)
-                                                        {
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                            <span style="font-size:10px" class="fa fa-star"></span>
-                                                            <span style="font-size:10px" class="fa fa-star"></span>
-                                                            <span style="font-size:10px" class="fa fa-star"></span>
-                                                        }
-                                                        @if (@item.OverallRating == 3)
-                                                        {
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                            <span style="font-size:10px" class="fa fa-star"></span>
-                                                            <span style="font-size:10px" class="fa fa-star"></span>
-                                                        }
-                                                        @if (@item.OverallRating == 4)
-                                                        {
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                            <span style="font-size:10px" class="fa fa-star"></span>
-                                                        }
-                                                        @if (@item.OverallRating == 5)
-                                                        {
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                            <span style="font-size:10px" class="fa fa-star checked"></span>
-                                                        }
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="container">
-                                                <div class="row">
-                                                    <div class="col-sm-10" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
-                                                        <div class="lib-header-seperator"></div>
-                                                    </div>
-                                                    <div class="col-sm-2" style="font-size: 13px;padding: 0px;text-align: right;">Open</div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="lib-row lib-desc" style="padding-right:0px">
-                                            <div class="col">@item.Address.AddressLine1</div>
-
-                                            <div class="container">
-                                                <div class="row">
-                                                    <div class="col-sm-9" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
-                                                        <div class="col">@item.Address.AddressLine2</div>
-                                                        @item.Address.Area, @item.Address.City, @item.Address.State
-                                                    </div>
-                                                    <div class="col-sm-3" style="margin-top:10px; text-align:right">
-                                                        <div class="row">
-
-                                                            <div class="col" style="width:40px; height:40px"><img onclick="(@("window.open('"+"tel:"+item.BusinessOwner.MobileNumber+"')"))" @*onclick="window.open('tel:900300400');"*@ style="width:40px; height:40px" src="/lib/images/Logos/call.jpg"></div>
-                                                            <div class="col" style="width:40px; height:40px; "><a style="padding-left: 10px;position: relative;    width: 100%;    bottom: 0px;   left: 0px;   text-align: right;" href="//api.whatsapp.com/send?phone=919844789937&text=WHATEVER_LINK_OR_TEXT_YOU_WANT_TO_SEND"><img style="width:32px; margin: 4px 7px 0px 7px;" src="/lib/images/Logos/whtasapp.jpg"></a></div>
-                                                            <div class="col" style="width:40px; height:40px"><img onclick="showInMap(@item.Address.Lattitude, @item.Address.Longitude)" style="width:40px; height:40px" src="~/lib/images/Logos/location.jpg" /></div>
-                                                        </div>
-                                                    </div>
-                                                    @*<div class="col-sm-3" style="margin-top:10px">
-                                                    <div class="row">
-
-                                                        <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/call.jpg" /></div>
-                                                        <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/whtasapp.jpg" /></div>
-                                                        <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/location.jpg" /></div>
-                                                    </div>
-                                                </div>*@
-                                                </div>
-                                            </div>
-                                            <div class="col"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
+    <div class="col-sm-9 listview" style="">
+        @foreach (var item in Model.Businesses)
+        {
+            @if (@Context.Session.GetString("IsMobileDevice") == null)
+            {
                 <div class="col-sm-12 listview" style="">
                     <div class="col-md-12 no-padding lib-item" data-category="view">
                         <div class="lib-panel">
                             <div class="row box-shadow">
                                 <div class="col-md-3" style="padding-left: 0px; padding-right: 0px;">
-                                    <img class="lib-img-show" src="http://lorempixel.com/850/850/?random=123" style="height:130px">
+                                    @if (item.Images.Count != 0)
+                                    {
+                                        <img src="@Url.Content(item.Images[0].Path)" style="height:130px" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/lib/images/Logos/Defaultshop.jpg" style="height:130px" />
+                                    }
                                 </div>
                                 <div class="col-md-9" style="padding-left: 0px;margin-left: 0px;">
                                     <div class="lib-row lib-header">
                                         <div class="container">
                                             <div class="row">
-                                                <div class="col-sm-11" style=" margin-left: 0px;padding-left: 0px; font-size: 18px;">
-                                                    Shree Veerabhadreshwara Kirana Store
+                                                <div class="col-sm-10" style=" margin-left: 0px;padding-left: 0px; font-size: large;">
+                                                    @Html.ActionLink(item.BusinessName, "ViewBusiness", new { id = item.ID })
                                                 </div>
-                                                <div class="col-sm-1" style="color:orangered; padding-left: 0px;">***</div>
+                                                <div class="col-sm-2" id="ratingscss" style="text-align:right; PADDING: 0PX;">
+                                                    @*<h6 style="text-align: right;">ratings: @item.OverallRating</h6>*@
+                                                    @if (@item.OverallRating == 0)
+                                                    {
+                                                        <span style="font-size:10px" class="fa fa-star "></span>
+                                                        <span style="font-size:10px" class="fa fa-star "></span>
+                                                        <span style="font-size:10px" class="fa fa-star "></span>
+                                                        <span style="font-size:10px" class="fa fa-star "></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                    }
+                                                    @if (@item.OverallRating == 1)
+                                                    {
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                    }
+                                                    @if (@item.OverallRating == 2)
+                                                    {
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                    }
+                                                    @if (@item.OverallRating == 3)
+                                                    {
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                    }
+                                                    @if (@item.OverallRating == 4)
+                                                    {
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                    }
+                                                    @if (@item.OverallRating == 5)
+                                                    {
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="container">
                                             <div class="row">
-                                                <div class="col-sm-11" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
+                                                <div class="col-sm-10" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
                                                     <div class="lib-header-seperator"></div>
                                                 </div>
-                                                <div class="col-sm-1" style="font-size: 13px;">Open</div>
+                                                @if (true)
+                                                {
+                                                    <div class="col-sm-2" style="font-size: small;padding: 0px;text-align: right;color:darkgreen">Open</div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-sm-2" style="font-size: small;padding: 0px;text-align: right;color:red">Open</div>
+                                                }
                                             </div>
                                         </div>
 
                                     </div>
                                     <div class="lib-row lib-desc" style="padding-right:0px">
-                                        <div class="col">#204, Gauli galli , infront of siddharud math</div>
-
+                                       
                                         <div class="container">
                                             <div class="row">
                                                 <div class="col-sm-9" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
-                                                    <div class="col">Hale hibballi</div>
-                                                    560029, Hubblli, Karnataka
+                                                    <div class="col" style="color:dimgrey; font-size:medium">@item.Address.AddressLine1</div>
+                                                    <div class="col" style="color:dimgrey;  font-size:medium">@item.Address.AddressLine2</div>
+                                                    <div class="col" style="color:dimgrey;  font-size:medium">@item.Address.Area, @item.Address.City, @item.Address.State</div>
                                                 </div>
-                                                <div class="col-sm-3" style="margin-top:10px">
+                                                <div class="col-sm-3" style="margin-top:10px; text-align:right; padding:0px">
                                                     <div class="row">
 
-                                                        <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/call.jpg" /></div>
-                                                        <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/whtasapp.jpg" /></div>
-                                                        <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/location.jpg" /></div>
+                                                        <div class="col" style="width:40px; height:40px"><img onclick="(@("window.open('"+"tel:"+item.BusinessOwner.MobileNumber+"')"))" @*onclick="window.open('tel:900300400');"*@ style="width:40px; height:40px" src="/lib/images/Logos/call.jpg"></div>
+                                                        <div class="col" style="width:40px; height:40px; "><a style="padding-left: 10px;position: relative;    width: 100%;    bottom: 0px;   left: 0px;   text-align: right;" href="//api.whatsapp.com/send?phone=919844789937&text=WHATEVER_LINK_OR_TEXT_YOU_WANT_TO_SEND"><img style="width:32px; margin: 4px 7px 0px 7px;" src="/lib/images/Logos/whtasapp.jpg"></a></div>
+                                                        <div class="col" style="width:40px; height:40px"><img onclick="showInMap(@item.Address.Lattitude, @item.Address.Longitude)" style="width:40px; height:40px" src="~/lib/images/Logos/location.jpg" /></div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -350,7 +318,174 @@
                         </div>
                     </div>
                 </div>
+            }
+            else
+            {
+                <div class="col-sm-12 listview" style="">
+                    <div class="col-md-12 no-padding lib-item" data-category="view">
+                        <div class="lib-panel">
+                            <div class="row box-shadow">
+                                <div class="col-md-3" style="padding-left: 0px; padding-right: 0px;">
+                                    @if (item.Images.Count != 0)
+                                    {
+                                        <img src="@Url.Content(item.Images[0].Path)" style="height:130px" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/lib/images/Logos/Defaultshop.jpg" style="height:130px" />
+                                    }
+                                </div>
+                                <div class="col-md-9" style="padding-left: 0px;margin-left: 0px;">
+                                    <div class="lib-row lib-header">
+                                        <div class="container">
+                                            <div class="row no-padding" style="margin-top:0px">
+                                                <div class="col-sm-2" id="ratingscss" style="PADDING: 0PX;">
+                                                    @*<h6 style="text-align: right;">ratings: @item.OverallRating</h6>*@
+                                                    @if (@item.OverallRating == 0)
+                                                    {
+                                                        <span style="font-size:10px" class="fa fa-star "></span>
+                                                        <span style="font-size:10px" class="fa fa-star "></span>
+                                                        <span style="font-size:10px" class="fa fa-star "></span>
+                                                        <span style="font-size:10px" class="fa fa-star "></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                    }
+                                                    @if (@item.OverallRating == 1)
+                                                    {
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                    }
+                                                    @if (@item.OverallRating == 2)
+                                                    {
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                    }
+                                                    @if (@item.OverallRating == 3)
+                                                    {
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                    }
+                                                    @if (@item.OverallRating == 4)
+                                                    {
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star"></span>
+                                                    }
+                                                    @if (@item.OverallRating == 5)
+                                                    {
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                        <span style="font-size:10px" class="fa fa-star checked"></span>
+                                                    }
+                                                </div>
+                                                <div class="col-sm-10" style=" margin-left: 0px;padding-left: 0px; font-size: 18px;">
+                                                    @Html.ActionLink(item.BusinessName, "ViewBusiness", new { id = item.ID })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-sm-2" style="font-size: 13px;padding: 0px;">Open</div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="lib-row lib-desc" style="padding-right:0px">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-sm-9" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
+                                                    <div class="col" style="color:dimgrey; font-size:medium">@item.Address.AddressLine1</div>
+                                                    <div class="col" style="color:dimgrey;  font-size:medium">@item.Address.AddressLine2</div>
+                                                    <div class="col" style="color:dimgrey;  font-size:medium">@item.Address.Area, @item.Address.City, @item.Address.State</div>
+                                                </div>
+                                                <div class="col-sm-3" style="margin-top:10px; margin-bottom:5px">
+                                                    <div class="row no-padding" style="margin-top:0px">
+
+                                                        <div class="col" style="width:40px; height:40px; text-align:left"><img onclick="(@("window.open('"+"tel:"+item.BusinessOwner.MobileNumber+"')"))" @*onclick="window.open('tel:900300400');"*@ style="width:40px; height:40px" src="/lib/images/Logos/call.jpg"></div>
+                                                        <div class="col" style="width:40px; height:40px; text-align:center "><a style="padding-left: 10px;position: relative;    width: 100%;    bottom: 0px;   left: 0px;   text-align: right;" href="//api.whatsapp.com/send?phone=919844789937&text=WHATEVER_LINK_OR_TEXT_YOU_WANT_TO_SEND"><img style="width:32px; margin: 4px 7px 0px 7px;" src="/lib/images/Logos/whtasapp.jpg"></a></div>
+                                                        <div class="col" style="width:40px; height:40px; text-align:right"><img onclick="showInMap(@item.Address.Lattitude, @item.Address.Longitude)" style="width:40px; height:40px" src="~/lib/images/Logos/location.jpg" /></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+        }
+        <div class="col-sm-12 listview" style="">
+            <div class="col-md-12 no-padding lib-item" data-category="view">
+                <div class="lib-panel">
+                    <div class="row box-shadow">
+                        <div class="col-md-3" style="padding-left: 0px; padding-right: 0px;">
+                            <img class="lib-img-show" src="http://lorempixel.com/850/850/?random=123" style="height:130px">
+                        </div>
+                        <div class="col-md-9" style="padding-left: 0px;margin-left: 0px;">
+                            <div class="lib-row lib-header">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-11" style=" margin-left: 0px;padding-left: 0px; font-size: 18px;">
+                                            Shree Veerabhadreshwara Kirana Store
+                                        </div>
+                                        <div class="col-sm-1" style="color:orangered; padding-left: 0px;">***</div>
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-11" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
+                                            <div class="lib-header-seperator"></div>
+                                        </div>
+                                        <div class="col-sm-1" style="font-size: 13px;">Open</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="lib-row lib-desc" style="padding-right:0px">
+                                <div class="col">#204, Gauli galli , infront of siddharud math</div>
+
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-9" style=" margin-left: 0px;padding-left: 0px; font-size: 13px;">
+                                            <div class="col">Hale hibballi</div>
+                                            560029, Hubblli, Karnataka
+                                        </div>
+                                        <div class="col-sm-3" style="margin-top:10px">
+                                            <div class="row">
+
+                                                <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/call.jpg" /></div>
+                                                <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/whtasapp.jpg" /></div>
+                                                <div class="col" style="width:40px; height:40px"><img style="width:40px; height:40px" src="~/lib/images/Logos/location.jpg" /></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+    </div>
         }
 
     </div>
@@ -485,7 +620,7 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/chosen.jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+@*<link href="~/lib/Chosen/font-awesome.min.css" rel="stylesheet" />*@
 <style>
     #ratingscss .checked {
         color: orange;
@@ -499,6 +634,7 @@
         height: 30px;
         border-radius: 3px;
         border: 1px solid #CCCCCC;
+        font-size: large
     }
 
         .chosen-container-single .chosen-single span {
@@ -508,7 +644,9 @@
         .chosen-container-single .chosen-single div b {
             margin-top: 2px;
         }
-
+    .chosen-container chosen-container-multi {
+        font-size: large
+    }
     .chosen-container-active .chosen-single,
     .chosen-container-active.chosen-with-drop .chosen-single {
         border-color: #ccc;
@@ -517,6 +655,9 @@
         outline: thin dotted \9;
         -moz-box-shadow: 0 0 8px rgba(82, 168, 236, .6);
         box-shadow: 0 0 8px rgba(82, 168, 236, .6)
+    }
+    .chosen-container chosen-container-single {
+        margin-bottom: 10px
     }
 
     .box {

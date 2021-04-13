@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>@ViewData["Title"] - TownerTown.Web</title>
+    <title>@ViewData["Title"]  TownerTown</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <style>
@@ -140,69 +140,140 @@
     }
     else
     {
-        <div class="MainLayout" style="background-color:#F0F0F0; padding:0px">
-            <div class="container-fluid MainLayout2"  style="padding:0px">
-                <div>
-                    <header style=" height: 4%;width: 100%">
-                        <nav class="container-fluid fixed-top navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color:#F0F0F0;">
-                            @*<div class="container">*@
-                            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><h5 style="color:black">TownerTown.Web</h5></a>
-                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                                    aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                                <ul class="nav navbar-nav ml-auto">
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="Faq">Faq</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="About">About</a>
-                                    </li>
-                                    @if (@Context.Session.GetString("UserID") == null)
-                                    {
+        if (@Context.Session.GetString("IsMobileDevice") != null)
+        {
+            <div class="MainLayout" style="background-color:#F0F0F0; padding:0px">
+                <div class="container-fluid MainLayout2" style="padding:0px">
+                    <div>
+                        <header style=" height: 4%;width: 100%">
+                            <nav class="container-fluid fixed-top navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color:#F0F0F0;">
+                                @*<div class="container">*@
+                                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><h5 style="color:black">TownerTown</h5></a>
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                                        aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                                    <ul class="nav navbar-nav ml-auto">
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="LogIn">LogIn</a>
+                                            <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="ManageBusiness" asp-action="Register">Register</a>
-                                        </li>
-                                    }
-                                    else
-                                    {
-                                        <li class="nav-item">
-                                            <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="LogOut">LogOut</a>
+                                            <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="ManageBusiness" asp-action="ViewProfile">Profile</a>
+                                            <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="Faq">Faq</a>
                                         </li>
-                                    }
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                                        </li>
+                                        @if (@Context.Session.GetString("UserID") == null)
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="LogIn">LogIn</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="ManageBusiness" asp-action="Register">Register</a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="LogOut">LogOut</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="ManageBusiness" asp-action="ViewProfile">Profile</a>
+                                            </li>
+                                        }
 
-                                </ul>
-                            </div>
-                            @*</div>*@
-                        </nav>
-                    </header>
+                                    </ul>
+                                </div>
+                                @*</div>*@
+                            </nav>
+                        </header>
 
-                    @*<img style="height:180px; width:100%" src="~/lib/images/ShopImages/mainImg.jpg" />*@
+                        @*<img style="height:180px; width:100%" src="~/lib/images/ShopImages/mainImg.jpg" />*@
 
-                    @RenderBody()
+                        @RenderBody()
+
+                    </div>
 
                 </div>
+            </div>
+            <footer class="border-top footer text-muted">
+                <div class="container">
+                    &copy; 2020 - TownerTown - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </div>
+            </footer>
+        }
+        else
+        {
+            <div class="MainLayout" style="background-color:#F0F0F0; padding:0px">
+                <div class="container MainLayout2" style="padding:0px">
+                    <div>
+                        <header style=" height: 4%;width: 100%">
+                            <nav class="container navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color:#F0F0F0;">
+                                @*<div class="container">*@
+                                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><h5 style="color:black">TownerTown</h5></a>
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                                        aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                                    <ul class="nav navbar-nav ml-auto">
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="Faq">Faq</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                                        </li>
+                                        @if (@Context.Session.GetString("UserID") == null)
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="LogIn">LogIn</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="ManageBusiness" asp-action="Register">Register</a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="Home" asp-action="LogOut">LogOut</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" style="width:100%" asp-area="" asp-controller="ManageBusiness" asp-action="ViewProfile">Profile</a>
+                                            </li>
+                                        }
 
+                                    </ul>
+                                </div>
+                                @*</div>*@
+                            </nav>
+                        </header>
+
+                        @*<img style="height:180px; width:100%" src="~/lib/images/ShopImages/mainImg.jpg" />*@
+
+                        @RenderBody()
+
+                    </div>
+
+                </div>
             </div>
-        </div>
-        <footer class="border-top footer text-muted">
-            <div class="container">
-                &copy; 2020 - TownerTown.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-            </div>
-        </footer>
+            <footer class="border-top footer text-muted">
+                <div class="container">
+                    &copy; 2020 - TownerTown - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </div>
+            </footer>
+
+        }
+
     }
 
 
